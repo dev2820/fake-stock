@@ -1,8 +1,8 @@
 const express = require('express');
 const path = require('path');
 const router = express.Router();
-const jwt = require('../module/jwt');
-const db = require('../module/DBconn')
+const jwt = require('./jwt');
+const db = require('./DBconn')
 
 const cookieParser = require('cookie-parser');
 router.use(cookieParser(process.env.COOKIE_KEY));
@@ -45,6 +45,7 @@ router.patch('/updatePassword', (req, res)=>{
 });
 
 router.delete('/deleteUser', (req, res)=>{
+	console.log('delete')
 	const email = jwt.checkJwt(req.signedCookies.token);
 	if(!email)
 		return res.redirect('/');

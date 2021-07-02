@@ -1,3 +1,4 @@
 # 무시할 파일이름 입력
 
 node_modules
+.env

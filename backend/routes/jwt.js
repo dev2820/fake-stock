@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 const suuuuperSecret = process.env.SECRET_KEY;
 
 module.exports.checkJwt = (token)=>{
@@ -15,5 +16,6 @@ module.exports.checkJwt = (token)=>{
 }
 
 module.exports.createJwt = (email)=>{
+	console.log(suuuuperSecret)
 	return jwt.sign({id: email}, suuuuperSecret)
 }
