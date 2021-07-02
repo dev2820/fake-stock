@@ -14,8 +14,8 @@ require('dotenv').config();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 // Router
-const userRouter = require('.backend/routes/userRouter');
-const pageRouter = require('.backend/routes/sendHtml');
+const userRouter = require('.routes/userRouter');
+const pageRouter = require('.routes/sendHtml');
 app.use('/', pageRouter);
 app.use('/user', userRouter);
 // 404 error
