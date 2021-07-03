@@ -1,14 +1,13 @@
-
 import React from 'react';
 
-class FindPass extends React.Component {
+class FindPassPage extends React.Component {
     render() {
         return (
             <div>
-                findpass
+                findpass page
             </div>
         )
     }
 }
 
-export default FindPass;
+export default FindPassPage;
