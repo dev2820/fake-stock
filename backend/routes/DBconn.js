@@ -57,12 +57,12 @@ module.exports.updatePw = (email, pw)=>{
 	connection.query(`UPDATE ${dbTable} SET password = '${key}', salt = '${salt}' WHERE (email = '${email}')`);
 }
 
-module.exports.excuteDB = (hamsu, email, pw, res)=>{
+module.exports.excuteDB = (callback, email, pw, res)=>{
 	connection.query(`select 1 from ${dbTable} where (email = '${email}')`,(err, data)=>{
 		if(!data[0]){
 			return console.log('no id');
 		}
-		hamsu(email, pw, res);
+		callback(email, pw, res);
 	})
 }
 
