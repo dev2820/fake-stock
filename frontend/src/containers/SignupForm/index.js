@@ -1,4 +1,4 @@
-import './signinForm.css'
+import './signupForm.css'
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchTestActionCreator } from '../../modules/signinReducer'
@@ -7,7 +7,7 @@ import CardUI from '../../components/CardUI';
 import InputText from '../../components/InputText';
 import InputPassword from '../../components/InputPassword';
 import Button from '../../components/Button';
-class SigninForm extends React.Component {
+class SignupForm extends React.Component {
     constructor(props){
         super(props);
         this.state = {
@@ -38,8 +38,9 @@ class SigninForm extends React.Component {
                     {/* <input type="text" onChange={(e)=>{this.setState({inputText:e.target.value})}}></input> */}
                     {/* <button onClick={this.handleExchangeTest}>변경</button> */}
                     <div className="links">
-                        <Link className="link" to="/signup">Sign up</Link>
-                        <Link className="link" to="/findpass">forget password?</Link>
+                        <span>
+                        go back to <Link className="link" to="/signin"> Sign in</Link>
+                        </span>
                     </div>
                     <Button onClick={this.handleExchangeTest}>SIGN UP</Button>
                 </div>
@@ -56,7 +57,7 @@ export default connect(({signinReducer}) => ({
     test: signinReducer.test
 }), {
     fetchTestActionCreator
-})(SigninForm);
+})(SignupForm);
 
 // export default connect((state) => ({
 //     test: state.signinReducer
