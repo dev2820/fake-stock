@@ -1,10 +1,14 @@
 import React from 'react';
-
+import FindPassForm from '../../containers/FindPassForm'
+import Wave from '../../components/Wave'
 class FindPassPage extends React.Component {
     render() {
         return (
             <div>
-                findpass page
+                <Wave></Wave>
+                <div className="center">
+                    <FindPassForm/>
+                </div>
             </div>
         )
     }
