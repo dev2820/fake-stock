@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 const session = require('express-session');
 var logger = require('morgan');
 const jwt = require('./my_modules/jwt')
+const cors = require('cors');
 
 require('dotenv').config();
 var indexRouter = require('./routes/sendHtml');
@@ -15,7 +16,10 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-
+app.use(cors({
+  origin: `http://localhost:${process.env.PORT || '3000'}`,
+  credentials: true
+}));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
