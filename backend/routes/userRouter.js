@@ -6,6 +6,8 @@ const db = require('../my_modules/DBconn');
 const crypto = require('crypto');
 const mailer = require('./myMailer');
 const cookieParser = require('cookie-parser');
+const redis = require('redis');
+const client = redis.createClient();
 router.use(cookieParser(process.env.COOKIE_KEY));
 
 router.post('/createUser', async (req, res) => {
@@ -87,6 +89,8 @@ router.delete('/deleteUser', async (req, res)=>{
 
 router.get('/sendConfirmCode', (req, res)=>{
 	try {
+		//db열고 존재하는 이메일인지 확인하는 코드 추가
+		//없는 이메일이라면 signup으로 이동할 수 있게 message send
 		const email = req.query.email;
 		const codeKey = mailer.createRandomKey(6);
 		const mailOptions = {
@@ -95,7 +99,7 @@ router.get('/sendConfirmCode', (req, res)=>{
 			subject: '인증키를 입력해주세요 - fake stock',
 			html: `다음 인증키를 입력해주세요.</br><h2>${codeKey}</h2>`
 		}
-		req.session.codeKey = codeKey;
+		client.set(email,codeKey);
 		mailer.sendMail(mailOptions,(error,info)=>{
 			if(error){
 				console.error(error);
@@ -112,12 +116,17 @@ router.get('/sendConfirmCode', (req, res)=>{
 });
 
 router.post('/checkConfirmCode', (req, res)=>{
-	if(req.session.codeKey === req.body.codeKey) {
-		res.status(200).send('success');
-	}
-	else {
-		res.status(400).send('failed');
-	}
+	const email = req.body.email;
+	client.exists(email)
+	client.get(email,(err,codeKey)=>{
+		if(codeKey === req.body.codeKey) {
+			client.del(email);
+			res.status(200).send('success');
+		}
+		else {
+			res.status(400).send('failed');
+		}
+	});
 });
 
 module.exports = router;
