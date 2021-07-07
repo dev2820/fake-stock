@@ -1,10 +1,9 @@
 const express = require('express');
 const path = require('path')
 const router = express.Router()
-const jwt = require('./jwt')
+const jwt = require('../my_modules/jwt')
 
 router.get('/', (req, res)=>{
-	console.log(process.env.SECRET_KEY)
 	const token = jwt.checkJwt(req.signedCookies.token);
 	if(!token){
 		res.redirect('/signin');

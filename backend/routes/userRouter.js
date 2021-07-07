@@ -1,61 +1,87 @@
 const express = require('express');
 const path = require('path');
 const router = express.Router();
-const jwt = require('./jwt');
-const db = require('./DBconn')
+const jwt = require('../my_modules/jwt');
+const db = require('../my_modules/DBconn');
+const crypto = require('crypto');
 
 const cookieParser = require('cookie-parser');
 router.use(cookieParser(process.env.COOKIE_KEY));
 
-router.post('/createUser', (req, res) =>{
-	const email = req.body.email || null;
-	const newPw = req.body.pw || null;
-	if(!(email && newPw))
-		return res.redirect('/signup');
+router.post('/createUser', async (req, res) => {
+	const email = req.body.email;
+	const pw = req.body.pw;
+	if(!(email && pw))
+		return res.status(400).send('no input');
 	
-	db.write(email, inputPw);
-	res.redirect('/');
+	const result = await db.insert(email, pw);
+	if(result)
+		return res.send('성공');
+	else if(result === false)
+		return res.send('실패');
+	else
+		return res.status(400).send('존재하는 id');
 });
 
-router.post('/login', (req, res)=>{
-	const email = req.body.email || null;
-	const inputPw = req.body.pw || null;
-	if(!(email && inputPw))
-		return res.redirect('/signin');
+router.post('/login', async (req, res)=>{
+	const email = req.body.email;
+	const pw = req.body.pw;
+	if(!(email && pw))
+		return res.status(400).send('no input');
 	
-	db.excuteDB(db.password, email, inputPw, res);
+	const row = await db.password(email, pw);
+	if(row){
+		const token = jwt.createJwt(email)
+		res.cookie('token', token, {
+			httpOnly: true,
+			signed: true,
+		})
+		return res.status(200).send('성공') // 로그인 성공
+	}
+	else if(row === false)
+		return res.status(401).send('비밀번호 불일치')
+	else
+		return res.status(400).send('잘못된 id');
 });
 
-router.get('/getUserInfo', (req, res)=>{
-	const email = jwt.checkJwt(req.signedCookies.token);
-	if(!email)
-		return res.redirect('/');
-	db.excuteDB(db.readInfo,email);
-	res.redirect('/');
+router.get('/getUserInfo', async (req, res)=>{
+	const data = await db.readInfo(req.body.userId);
+	if(data)
+		res.status(200).send(data);
+	else
+		res.status(400).send('정보없음')
 });
 
-router.patch('/updatePassword', (req, res)=>{
+router.patch('/updatePassword', async (req, res)=>{
 	const email = jwt.checkJwt(req.signedCookies.token);
-	if(!email)
-		return res.redirect('/');
+	const pw = req.body.pw;
+	if(!(email && pw))
+		return res.status(400).send('no input');
 		
-	const newPw = req.body;
-	db.excuteDB(db.updatePw, email, newPw);
-	res.redirect('/');
+	const result = await db.updatePw(email, pw);
+	console.log(result)
+	if(result)
+		return res.send('update 성공');
+	else if(result === false)
+		return res.status(401).send('패스워드 갱신 실패');
+	else
+		return res.status(400).send('잘못된 id');
 });
 
-router.delete('/deleteUser', (req, res)=>{
-	console.log('delete')
-	const email = jwt.checkJwt(req.signedCookies.token);
-	if(!email)
-		return res.redirect('/');
+router.delete('/deleteUser', async (req, res)=>{
 	res.clearCookie('token', {
 		httpOnly: true,
 		signed: true,
 		path: '/'
 	});
-	db.excuteDB(db.delete, email);
-	res.redirect('/');
+	const result = await db.delete(email);
+		
+	if(result)
+		return res.status(200).send('삭제 완료');
+	else if(result === false)
+		return res.status(401).send('삭제 실패');
+	else
+		return res.status(400).send('잘못된 id');
 });
 
 
@@ -64,7 +90,6 @@ router.get('/sendConfirmCode', (req, res)=>{
 });
 
 router.post('/checkConfirmCode', (req, res)=>{
-
 });
 
 module.exports = router;
