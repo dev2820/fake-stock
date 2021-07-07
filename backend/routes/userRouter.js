@@ -53,13 +53,11 @@ router.get('/getUserInfo', async (req, res)=>{
 });
 
 router.patch('/updatePassword', async (req, res)=>{
-	const email = jwt.checkJwt(req.signedCookies.token);
 	const pw = req.body.pw;
-	if(!(email && pw))
+	if(!pw)
 		return res.status(400).send('no input');
 		
-	const result = await db.updatePw(email, pw);
-	console.log(result)
+	const result = await db.updatePw(req.body.userId, pw);
 	if(result)
 		return res.send('update 성공');
 	else if(result === false)
@@ -74,7 +72,7 @@ router.delete('/deleteUser', async (req, res)=>{
 		signed: true,
 		path: '/'
 	});
-	const result = await db.delete(email);
+	const result = await db.delete(req.body.userId);
 		
 	if(result)
 		return res.status(200).send('삭제 완료');
