@@ -101,22 +101,22 @@ router.get('/sendConfirmCode', (req, res)=>{
 				console.error(error);
 			}
 			else {
-				res.status(200).json({status:'success'});
+				res.status(200).send('success');
 			}
 		});
 	}
 	catch(err) {
 		console.error(err);
-		res.status(400).json({status:'failed'});
+		res.status(400).send('failed');
 	}
 });
 
 router.post('/checkConfirmCode', (req, res)=>{
 	if(req.session.codeKey === req.body.codeKey) {
-		res.status(200).json({status:'success'});
+		res.status(200).send('success');
 	}
 	else {
-		res.status(400).json({status:'failed'});
+		res.status(400).send('failed');
 	}
 });
 
