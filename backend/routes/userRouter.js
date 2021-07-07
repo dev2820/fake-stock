@@ -4,7 +4,7 @@ const router = express.Router();
 const jwt = require('../my_modules/jwt');
 const db = require('../my_modules/DBconn');
 const crypto = require('crypto');
-
+const mailer = require('./myMailer');
 const cookieParser = require('cookie-parser');
 router.use(cookieParser(process.env.COOKIE_KEY));
 
@@ -86,10 +86,38 @@ router.delete('/deleteUser', async (req, res)=>{
 
 
 router.get('/sendConfirmCode', (req, res)=>{
-	
+	try {
+		const email = req.query.email;
+		const codeKey = mailer.createRandomKey(6);
+		const mailOptions = {
+			from: process.env.MAIL_ID,
+			to: email,
+			subject: '인증키를 입력해주세요 - fake stock',
+			html: `다음 인증키를 입력해주세요.</br><h2>${codeKey}</h2>`
+		}
+		req.session.codeKey = codeKey;
+		mailer.sendMail(mailOptions,(error,info)=>{
+			if(error){
+				console.error(error);
+			}
+			else {
+				res.status(200).json({status:'success'});
+			}
+		});
+	}
+	catch(err) {
+		console.error(err);
+		res.status(400).json({status:'failed'});
+	}
 });
 
 router.post('/checkConfirmCode', (req, res)=>{
+	if(req.session.codeKey === req.body.codeKey) {
+		res.status(200).json({status:'success'});
+	}
+	else {
+		res.status(400).json({status:'failed'});
+	}
 });
 
 module.exports = router;

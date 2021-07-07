@@ -2,6 +2,7 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+const session = require('express-session');
 var logger = require('morgan');
 const jwt = require('./my_modules/jwt')
 
@@ -20,9 +21,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(`${process.env.COOKIE_KEY}`));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+  secret: process.env.COOKIE_KEY,
+  resave: false,
+  saveUninitialized: false,
+  cookie: { 
+    secure: false,
+    maxAge: 60*5
+  }
+}))
 
-app.use('/', indexRouter);
-app.use('/user',jwt.jwtCheckModule, usersRouter);
+app.use('/user', usersRouter);
+app.use('/*', indexRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

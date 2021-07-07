@@ -1,0 +1,31 @@
+div.form-input-text {
+    position:relative;
+}
+input[type="text"] {
+    width:100%;
+    border:none;
+    border-bottom:1px solid #121212;
+    padding:10px 5px;
+    box-sizing: border-box;
+    height:40px;
+    font-size:1.1rem;
+}
+input[type="text"]:focus {
+    outline:none;
+    border-bottom:1px solid #892CDC;
+}
+label {
+    position:absolute;
+    pointer-events:none;
+    color:#cccccc;
+    left:5px;
+    top:10px;
+    transition:0.2s;
+}
+input[type="text"]:focus ~ label,
+input[type="text"].active ~ label {
+    top:-20px;
+    font-size:14px;
+    transition:0.2s;
+    color:#892CDC;
+}
