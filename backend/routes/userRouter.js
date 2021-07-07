@@ -100,6 +100,7 @@ router.get('/sendConfirmCode', (req, res)=>{
 			html: `다음 인증키를 입력해주세요.</br><h2>${codeKey}</h2>`
 		}
 		client.set(email,codeKey);
+		client.expire(email,60*5);//5분 후 만료
 		mailer.sendMail(mailOptions,(error,info)=>{
 			if(error){
 				console.error(error);
@@ -117,16 +118,20 @@ router.get('/sendConfirmCode', (req, res)=>{
 
 router.post('/checkConfirmCode', (req, res)=>{
 	const email = req.body.email;
-	client.exists(email)
-	client.get(email,(err,codeKey)=>{
-		if(codeKey === req.body.codeKey) {
-			client.del(email);
-			res.status(200).send('success');
-		}
-		else {
-			res.status(400).send('failed');
-		}
-	});
+	if(!client.exists(email)) {
+		res.status(400).send('만료됨');
+	}
+	else {
+		client.get(email,(err,codeKey)=>{
+			if(codeKey === req.body.codeKey) {
+				client.del(email);
+				res.status(200).send('success');
+			}
+			else {
+				res.status(400).send('failed');
+			}
+		});
+	}
 });
 
 module.exports = router;
