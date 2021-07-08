@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import CardUI from '../../components/CardUI';
 import InputText from '../../components/InputText';
 import InputPassword from '../../components/InputPassword';
-import Button from '../../components/Button';
+import Button from '../../components/CustomButton';
 class SignupForm extends React.Component {
     constructor(props){
         super(props);

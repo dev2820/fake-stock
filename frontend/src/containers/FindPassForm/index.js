@@ -1,10 +1,10 @@
 import React from 'react';
-import './findPassForm.css';
+import './FindPassForm.scss';
 import InputText from '../../components/InputText';
 import InputPassword from '../../components/InputPassword';
-import Button from '../../components/Button';
+import Button from '../../components/CustomButton';
 import CardUI from '../../components/CardUI';
-import { Redirect } from 'react-router-dom'
+import { Link,Redirect } from 'react-router-dom'
 import axios from 'axios'
 
 class FindPassForm extends React.Component {
@@ -37,6 +37,9 @@ class FindPassForm extends React.Component {
                         value={this.state.email}
                         onChange={(e)=>{this.setState({email:e.target.value})}}
                     ></InputText>
+                    <div className="link-box">
+                        go to <Link className="link" to="/signin">signin</Link>
+                    </div>
                     <Button onClick={this.gotoConfirmCodeKeyStep}>인증코드 보내기</Button>
                 </div>
                 <div className="form hidden" ref={this.confirmCodeKeyStep}>

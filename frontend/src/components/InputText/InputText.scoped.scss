@@ -1,5 +1,6 @@
 div.form-input-text {
     position:relative;
+    margin-top:20px;
 }
 input[type="text"] {
     width:100%;
@@ -9,10 +10,17 @@ input[type="text"] {
     box-sizing: border-box;
     height:40px;
     font-size:1.1rem;
-}
-input[type="text"]:focus {
-    outline:none;
-    border-bottom:1px solid #892CDC;
+    &:focus {
+        outline:none;
+        border-bottom:1px solid #892CDC;
+    }
+    &:focus ~ label,
+    &.active ~ label {
+        top:-20px;
+        font-size:14px;
+        transition:0.2s;
+        color:#892CDC;
+    }
 }
 label {
     position:absolute;
@@ -21,11 +29,4 @@ label {
     left:5px;
     top:10px;
     transition:0.2s;
-}
-input[type="text"]:focus ~ label,
-input[type="text"].active ~ label {
-    top:-20px;
-    font-size:14px;
-    transition:0.2s;
-    color:#892CDC;
 }
