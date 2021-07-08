@@ -1,6 +1,7 @@
 import React from 'react';
 import './findPassForm.css';
 import InputText from '../../components/InputText';
+import InputPassword from '../../components/InputPassword';
 import Button from '../../components/Button';
 import CardUI from '../../components/CardUI';
 import { Redirect } from 'react-router-dom'
@@ -51,11 +52,11 @@ class FindPassForm extends React.Component {
                 <div className="form hidden" ref={this.changePassStep}>
                     <h2 className="title">FindPass</h2>
                     <p>{this.state.guideText}</p>
-                    <InputText 
+                    <InputPassword 
                         placeholder="password"
                         value={this.state.newPassword}
                         onChange={(e)=>{this.setState({newPassword:e.target.value})}}
-                    ></InputText>
+                    ></InputPassword>
                     <Button onClick={this.requestChangePassword}>확인</Button>
                 </div>
                 {this.state.goHome && <Redirect to="/" />}

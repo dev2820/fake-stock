@@ -1,4 +1,4 @@
-import './button.css';
+import './button.scoped.scss';
 
 const Button = (props) => {
     return (

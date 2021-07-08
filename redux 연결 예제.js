@@ -15,13 +15,14 @@ class SignupForm extends React.Component {
             email: "",
             password: ""
         };
-        this.handleSignup = this.handleSignup.bind(this);
+        this.handleExchangeTest = this.handleExchangeTest.bind(this);
     }
     render() {
         return (
             <CardUI>
                 <div className="form">
                     <h2 className="title">SIGN UP</h2>
+                    {/* <h2>{this.props.test}</h2> */}
                     <InputText 
                         className="email-field"
                         placeholder="User Email"
@@ -34,18 +35,20 @@ class SignupForm extends React.Component {
                         value={this.state.password}
                         onChange={(e)=>{this.setState({password:e.target.value})}}
                     />
+                    {/* <input type="text" onChange={(e)=>{this.setState({inputText:e.target.value})}}></input> */}
+                    {/* <button onClick={this.handleExchangeTest}>변경</button> */}
                     <div className="links">
                         <span>
                         go back to <Link className="link" to="/signin"> Sign in</Link>
                         </span>
                     </div>
-                    <Button onClick={this.handleSignup}>SIGN UP</Button>
+                    {/* <Button onClick={this.handleExchangeTest}>SIGN UP</Button> */}
                 </div>
             </CardUI>
         )
     }
-    handleSignup(event) {
-        
+    handleExchangeTest(event) {
+        this.props.fetchTestActionCreator({text:this.state.inputText});
     }
 }
 
