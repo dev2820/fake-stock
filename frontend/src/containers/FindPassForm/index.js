@@ -4,6 +4,7 @@ import InputText from '../../components/InputText';
 import InputPassword from '../../components/InputPassword';
 import Button from '../../components/CustomButton';
 import CardUI from '../../components/CardUI';
+import Timer from '../../components/Timer';
 import { Link,Redirect } from 'react-router-dom'
 import axios from 'axios'
 
@@ -15,12 +16,15 @@ class FindPassForm extends React.Component {
             codeKey: "",
             newPassword:"",
             goHome:false,
+            time: 60*5,
             guideText: "등록한 이메일을 입력해주세요."
         }
         this.gotoConfirmCodeKeyStep = this.gotoConfirmCodeKeyStep.bind(this);
         this.gotoChangePassStep = this.gotoChangePassStep.bind(this)
         this.requestChangePassword = this.requestChangePassword.bind(this)
-        
+        this.handleTimeOver = this.handleTimeOver.bind(this);
+        this.startTimer = this.startTimer.bind(this);
+
         this.getEmailStep = React.createRef();
         this.confirmCodeKeyStep = React.createRef();
         this.changePassStep = React.createRef();
@@ -45,11 +49,15 @@ class FindPassForm extends React.Component {
                 <div className="form hidden" ref={this.confirmCodeKeyStep}>
                     <h2 className="title">FindPass</h2>
                     <p>{this.state.guideText}</p>
+                    <Timer time={this.state.time} onTimeOver={this.handleTimeOver}/>
                     <InputText 
                         placeholder="codekey"
                         value={this.state.codeKey}
                         onChange={(e)=>{this.setState({codeKey:e.target.value})}}
                     ></InputText>
+                    <div className="link-box">
+                        go to <Link className="link" to="/signin">signin</Link>
+                    </div>
                     <Button onClick={this.gotoChangePassStep}>확인</Button>
                 </div>
                 <div className="form hidden" ref={this.changePassStep}>
@@ -60,6 +68,9 @@ class FindPassForm extends React.Component {
                         value={this.state.newPassword}
                         onChange={(e)=>{this.setState({newPassword:e.target.value})}}
                     ></InputPassword>
+                    <div className="link-box">
+                        go to <Link className="link" to="/signin">signin</Link>
+                    </div>
                     <Button onClick={this.requestChangePassword}>확인</Button>
                 </div>
                 {this.state.goHome && <Redirect to="/" />}
@@ -76,8 +87,9 @@ class FindPassForm extends React.Component {
                 this.getEmailStep.current.classList.add('hidden')
                 this.confirmCodeKeyStep.current.classList.remove('hidden');
                 this.setState({
-                    guideText: "이메일로 전송된 확인 코드를 입력해주세요"
+                    guideText: "이메일로 전송된 확인 코드를 입력해주세요",
                 })
+                this.startTimer(60*5);
             }
             else {
                 this.setState({
@@ -126,6 +138,26 @@ class FindPassForm extends React.Component {
         }).catch(err=>{
             console.error(err);
         })
+    }
+    handleTimeOver() {
+        alert('시간이 초과되었습니다. 이메일 입력 페이지로 돌아갑니다.');
+        this.confirmCodeKeyStep.current.classList.add('hidden');
+        this.getEmailStep.current.classList.remove('hidden')
+    }
+    startTimer(second){
+        this.setState({
+            time:second
+        });
+        let remainTime = second;
+        const timer = setInterval(()=>{
+            remainTime--;
+            if(remainTime === 0) {
+                clearInterval(timer)
+            }
+            this.setState({
+                time: remainTime
+            })
+        },1000);
     }
 }
 
