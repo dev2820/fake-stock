@@ -98,7 +98,7 @@ router.get('/sendConfirmCode', async (req, res)=>{
 		//db열고 존재하는 이메일인지 확인하는 코드 추가
 		//없는 이메일이라면 signup으로 이동할 수 있게 message send
 		const email = req.query.email;
-		if(await db.isExist(email)) {
+		if(!await db.isExist(email)) {
 			return res.status(400).send("email doesn't exist");
 		}
 		const codeKey = mailer.createRandomKey(6);
