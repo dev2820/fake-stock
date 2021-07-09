@@ -9,6 +9,7 @@ const initialState = {
   id: "",
   password: "",
   test: "test code",
+  isLogined: false
 };
 
 //reducer
