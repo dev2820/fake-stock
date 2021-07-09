@@ -14,13 +14,14 @@ router.post('/createUser', async (req, res) => {
 	if(!(email && pw))
 		return res.status(400).send('no input');
 	
+	if(!await db.isExist(email))
+		return res.status(400); // email 불일치
+
 	const result = await db.insert(email, pw);
 	if(result)
 		return res.send('성공');
-	else if(result === false)
-		return res.send('실패');
 	else
-		return res.status(400).send('존재하는 id');
+		return res.send('실패');
 });
 
 router.post('/login', async (req, res)=>{
@@ -29,7 +30,10 @@ router.post('/login', async (req, res)=>{
 	if(!(email && pw))
 		return res.status(400).send('no input');
 	
-	const row = await db.password(email, pw);
+	if(await db.isExist(email))
+		return res.status(400); // email 불일치
+
+	const row = await db.isRightPw(email, pw);
 	if(row){
 		const token = jwt.createJwt(email)
 		res.cookie('token', token, {
@@ -38,13 +42,14 @@ router.post('/login', async (req, res)=>{
 		})
 		return res.status(200).send('성공') // 로그인 성공
 	}
-	else if(row === false)
-		return res.status(401).send('비밀번호 불일치')
 	else
-		return res.status(400).send('잘못된 id');
+		return res.status(401).send('비밀번호 불일치')
 });
 
-router.get('/getUserInfo', async (req, res)=>{
+router.get('/getUserInfo', jwt.jwtCheckMiddleWare, async (req, res)=>{
+	if(await db.isExist(req.body.userId))
+		return res.status(400); // email 불일치
+
 	const data = await db.readInfo(req.body.userId);
 	if(data)
 		res.status(200).send(data);
@@ -52,34 +57,37 @@ router.get('/getUserInfo', async (req, res)=>{
 		res.status(400).send('정보없음')
 });
 
-router.patch('/updatePassword', async (req, res)=>{
+router.patch('/updatePassword', jwt.jwtCheckMiddleWare, async (req, res)=>{
 	const pw = req.body.pw;
 	if(!pw)
 		return res.status(400).send('no input');
 		
+	if(await db.isExist(req.body.userId))
+		return res.status(400); // email 불일치
+
 	const result = await db.updatePw(req.body.userId, pw);
 	if(result)
 		return res.send('update 성공');
-	else if(result === false)
-		return res.status(401).send('패스워드 갱신 실패');
 	else
-		return res.status(400).send('잘못된 id');
+		return res.status(401).send('패스워드 갱신 실패');
 });
 
-router.delete('/deleteUser', async (req, res)=>{
+router.delete('/deleteUser', jwt.jwtCheckMiddleWare, async (req, res)=>{
 	res.clearCookie('token', {
 		httpOnly: true,
 		signed: true,
 		path: '/'
 	});
+
+	if(await db.isExist(req.body.userId))
+		return res.status(400); // email 불일치
+
 	const result = await db.delete(req.body.userId);
 		
 	if(result)
 		return res.status(200).send('삭제 완료');
-	else if(result === false)
-		return res.status(401).send('삭제 실패');
 	else
-		return res.status(400).send('잘못된 id');
+		return res.status(401).send('삭제 실패');
 });
 
 

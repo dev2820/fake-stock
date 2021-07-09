@@ -13,8 +13,6 @@ const pool = mariadb.createPool({
 }).promise();
 
 module.exports.readInfo = async (email) => {
-	if(!await isExist(email))
-		return undefined;
 	try{
 		const [[row]] = await pool.query(`select email, create_at, '${email}' from ${dbTable}`);
 		return row;
@@ -24,9 +22,7 @@ module.exports.readInfo = async (email) => {
 	}
 };
 
-module.exports.password = async (email, pw)=>{
-	if(!await isExist(email))
-		return undefined;
+module.exports.isRightPw = async (email, pw)=>{
 	try{
 		const [[row]] = await pool.query(`select password, salt, '${email}' from ${dbTable}`);
 		const key = crypto.pbkdf2Sync(pw, row.salt, 1000, 60, 'sha512').toString('base64');
@@ -42,9 +38,7 @@ module.exports.password = async (email, pw)=>{
 	}
 }
 
-module.exports.insert = async (email, pw) => { // result
-	if(await isExist(email))
-		return undefined;
+module.exports.insert = async (email, pw) => {
 	try{
 		const salt = crypto.randomBytes(8).toString('hex');
 		const key = crypto.pbkdf2Sync(pw, salt, 1000, 60, 'sha512').toString('base64');
@@ -59,9 +53,7 @@ module.exports.insert = async (email, pw) => { // result
 	}
 };
 	
-module.exports.delete = async (email) =>{ // result
-	if(!await isExist(email))
-		return undefined;
+module.exports.delete = async (email) =>{
 	try{
 		const [result] = await pool.query(`DELETE FROM ${dbTable} WHERE (email = '${email}')`);
 		if(result.affectedRows == 1)
@@ -75,8 +67,6 @@ module.exports.delete = async (email) =>{ // result
 };
 
 module.exports.updatePw = async (email, pw)=>{
-	if(!await isExist(email))
-		return undefined;
 	try{
 		const salt = crypto.randomBytes(8).toString('hex');
 		const key = crypto.pbkdf2Sync(pw, salt, 1000, 60, 'sha512').toString('base64');
@@ -92,7 +82,7 @@ module.exports.updatePw = async (email, pw)=>{
 	}
 }
 
-async function isExist(email){
+module.exports.isExist = async (email) =>{
 	try{
 		if((await pool.query(`select 1 from ${dbTable} where (email = '${email}')`))[0][0])
 			return true;

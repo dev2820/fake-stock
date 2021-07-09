@@ -4,7 +4,6 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 const session = require('express-session');
 var logger = require('morgan');
-const jwt = require('./my_modules/jwt')
 
 require('dotenv').config();
 var indexRouter = require('./routes/sendHtml');
