@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import CardUI from "../../components/CardUI";
-import Button from "../../components/Button";
+import Button from "../../components/CustomButton";
 import { Link } from "react-router-dom";
 import InputText from "../../components/InputText";
 import InputPassword from "../../components/InputPassword";

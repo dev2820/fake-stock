@@ -1,7 +1,7 @@
 import './signupForm.css'
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchTestActionCreator } from '../../modules/signinReducer'
+import { fetchTestActionCreator } from '../../modules/testReducer'
 import { Link } from 'react-router-dom';
 import CardUI from '../../components/CardUI';
 import InputText from '../../components/InputText';
