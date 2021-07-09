@@ -50,11 +50,14 @@ class SignupForm extends React.Component {
 }
 
 /*redux 연결 */
-export default connect(({signinReducer}) => ({
-    test: signinReducer.test
-}), {
-    fetchTestActionCreator
-})(SignupForm);
+export default connect(
+  ({ loginReducer }) => ({
+    test: loginReducer.test,
+  }),
+  {
+    fetchTestActionCreator,
+  }
+)(SignupForm);
 
 // export default connect((state) => ({
 //     test: state.signinReducer

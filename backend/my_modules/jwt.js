@@ -20,7 +20,7 @@ module.exports.createJwt = (email)=>{
 }
 
 module.exports.jwtCheckModule = (req, res, next)=>{
-	if(req.url == '/login' || req.url == '/createUser')
+	if(req.url == '/login' || req.url == '/createUser' || req.url == '/sendConfirmCode' || req.url == '/checkConfirmCode')
 		if(!req.signedCookies.token)
 			next();
 		else
