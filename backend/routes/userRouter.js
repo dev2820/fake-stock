@@ -97,6 +97,7 @@ router.get('/sendConfirmCode', (req, res)=>{
 	try {
 		//db열고 존재하는 이메일인지 확인하는 코드 추가
 		//없는 이메일이라면 signup으로 이동할 수 있게 message send
+		/* res.status(400).send('failed'); */
 		const email = req.query.email;
 		const codeKey = mailer.createRandomKey(6);
 		const mailOptions = {
@@ -106,7 +107,7 @@ router.get('/sendConfirmCode', (req, res)=>{
 			html: `다음 인증키를 입력해주세요.</br><h2>${codeKey}</h2>`
 		}
 		client.set(email,codeKey);
-		client.expire(email,60*5);//5분 후 만료
+		client.expire(email,60*5);
 		mailer.sendMail(mailOptions,(error,info)=>{
 			if(error){
 				console.error(error);
