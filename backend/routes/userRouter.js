@@ -93,11 +93,12 @@ router.delete('/deleteUser', jwt.jwtCheckMiddleWare, async (req, res)=>{
 });
 
 
-router.get('/sendConfirmCode', (req, res)=>{
+router.get('/sendConfirmCode', async (req, res)=>{
 	try {
 		//db열고 존재하는 이메일인지 확인하는 코드 추가
 		//없는 이메일이라면 signup으로 이동할 수 있게 message send
-		/* res.status(400).send('failed'); */
+		if(!await db.isExist(req.query.email))
+			return res.send(400).send('goto signup');
 		const email = req.query.email;
 		const codeKey = mailer.createRandomKey(6);
 		const mailOptions = {
