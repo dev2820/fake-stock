@@ -19,11 +19,17 @@ module.exports.createJwt = (email)=>{
 	return jwt.sign({id: email}, suuuuperSecret)
 }
 
+<<<<<<< HEAD
 module.exports.jwtCheckMiddleWare = (req, res, next)=>{
 	try{
 		const result = this.checkJwt(req.signedCookies.token);
 		if(result){
 			req.body.userId = result;
+=======
+module.exports.jwtCheckMiddleware = (req, res, next)=>{
+	if(req.url == '/login' || req.url == '/createUser' || req.url == '/sendConfirmCode' || req.url == '/checkConfirmCode')
+		if(!req.signedCookies.token)
+>>>>>>> c980b796d007d8e46cd75b09e1e7d473e41fa385
 			next();
 		}
 		else

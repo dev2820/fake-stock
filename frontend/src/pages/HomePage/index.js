@@ -1,11 +1,16 @@
-import React from 'react';
+import React from "react";
+import HomepageForm from "../../containers/HomepageForm";
+import Wave from "../../components/Wave";
 
-const HomePage = () => {
-    return (
-        <div>
-            <h1>Home page</h1>
-        </div>
-    )
+const Homepage = () => {
+  return (
+    <div>
+      <Wave />
+      <div className="center">
+        <HomepageForm />
+      </div>
+    </div>
+  );
 };
 
-export default HomePage;
+export default Homepage;

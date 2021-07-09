@@ -1,0 +1,20 @@
+button.custom-button {
+    border: 1px solid #892CDC;
+    background:transparent;
+    border-radius:8px;
+    padding:8px;
+    font-size:1.05rem;
+    cursor:pointer;
+    transition:0.3s;
+    a {
+        text-decoration: none;
+    }
+    &:hover {
+        background:#892CDC;
+        color:white;
+        transition:0.3s;
+    }
+    &:focus {
+        outline:none;
+    }
+}

@@ -1,11 +1,11 @@
-/* 
+/*
  * root reducer
  */
 import { combineReducers } from "redux";
-import signinReducer from "./signinReducer";
+import testReducer from "./testReducer";
 
 const rootReducer = combineReducers({
-    signinReducer
+  testReducer,
 });
 
 export default rootReducer;

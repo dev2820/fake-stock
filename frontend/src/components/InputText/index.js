@@ -1,4 +1,4 @@
-import './inputText.css';
+import './InputText.scoped.scss';
 
 const InputText = (props) => {
     return (
