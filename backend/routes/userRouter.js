@@ -108,7 +108,7 @@ router.get('/sendConfirmCode', async (req, res)=>{
 			html: `다음 인증키를 입력해주세요.</br><h2>${codeKey}</h2>`
 		}
 		client.set(email,codeKey);
-		client.expire(email,60*5);//5분 후 만료
+		client.expire(email,60*5);
 		mailer.sendMail(mailOptions,(error,info)=>{
 			if(error){
 				console.error(error);
