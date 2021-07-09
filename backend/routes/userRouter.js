@@ -10,7 +10,7 @@ const redis = require('redis');
 const client = redis.createClient();
 router.use(cookieParser(process.env.COOKIE_KEY));
 
-router.post('/createUser', async (req, res) => {
+router.post('/createUser',async (req, res) => {
 	const email = req.body.email;
 	const pw = req.body.pw;
 	if(!(email && pw))

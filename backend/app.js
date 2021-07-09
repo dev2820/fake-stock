@@ -3,7 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const jwt = require('./my_modules/jwt')
+const { jwtCheckMiddleware } = require('./my_modules/jwt')
 const cors = require('cors');
 
 require('dotenv').config();
@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(`${process.env.COOKIE_KEY}`));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/user', usersRouter);
+app.use('/user',jwtCheckMiddleware,usersRouter);
 app.use('/*', indexRouter);
 
 // catch 404 and forward to error handler
