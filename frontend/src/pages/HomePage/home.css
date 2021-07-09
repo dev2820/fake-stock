@@ -1,0 +1,25 @@
+.center {
+    position:absolute;
+    width:450px;
+    height:600px;
+    left:50%;
+    top:50%;
+    margin-left:-225px;
+    margin-top:-300px;
+}
+
+.links {
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+    padding:0px;
+    margin:5px 0 10px 0;
+}
+a.link {
+   
+    text-decoration: none;
+}
+
+h1.title {
+    text-align:center;
+}

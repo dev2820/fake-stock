@@ -1,0 +1,19 @@
+h2.title {
+    font-size:3.5rem;
+    text-align:center;
+}
+div.form {
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+}
+.links {
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+    padding:0px;
+    margin:5px 0 10px 0;
+}
+a.link {
+    text-decoration: none;
+}
