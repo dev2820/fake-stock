@@ -16,8 +16,8 @@ router.post('/createUser',async (req, res) => {
 	if(!(email && pw))
 		return res.status(400).send('no input');
 	
-	if(!await db.isExist(email))
-		return res.status(400); // email 불일치
+	if(await db.isExist(email))
+		return res.status(400); // email 존재
 
 	const result = await db.insert(email, pw);
 	if(result)
@@ -32,8 +32,8 @@ router.post('/login', async (req, res)=>{
 	if(!(email && pw))
 		return res.status(400).send('no input');
 	
-	if(await db.isExist(email))
-		return res.status(400); // email 불일치
+	if(!await db.isExist(email))
+		return res.status(400).send('불일치'); // email 불일치
 
 	const row = await db.isRightPw(email, pw);
 	if(row){
@@ -49,7 +49,7 @@ router.post('/login', async (req, res)=>{
 });
 
 router.get('/getUserInfo', jwt.jwtCheckMiddleWare, async (req, res)=>{
-	if(await db.isExist(req.body.userId))
+	if(!await db.isExist(req.body.userId))
 		return res.status(400); // email 불일치
 
 	const data = await db.readInfo(req.body.userId);
@@ -64,7 +64,7 @@ router.patch('/updatePassword', jwt.jwtCheckMiddleWare, async (req, res)=>{
 	if(!pw)
 		return res.status(400).send('no input');
 		
-	if(await db.isExist(req.body.userId))
+	if(!await db.isExist(req.body.userId))
 		return res.status(400); // email 불일치
 
 	const result = await db.updatePw(req.body.userId, pw);
@@ -81,7 +81,7 @@ router.delete('/deleteUser', jwt.jwtCheckMiddleWare, async (req, res)=>{
 		path: '/'
 	});
 
-	if(await db.isExist(req.body.userId))
+	if(!await db.isExist(req.body.userId))
 		return res.status(400); // email 불일치
 
 	const result = await db.delete(req.body.userId);
