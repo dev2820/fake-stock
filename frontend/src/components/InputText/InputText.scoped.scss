@@ -30,3 +30,13 @@ label {
     top:10px;
     transition:0.2s;
 }
+input.happyEmoji{
+    background:url('../../assets/images/happy.png');
+    background-repeat: no-repeat;
+    background-position: right;
+}
+input.sadEmoji{
+    background:url('../../assets/images/sad.png');
+    background-repeat: no-repeat;
+    background-position: right;
+}
