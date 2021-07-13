@@ -8,6 +8,8 @@ import InputEmail from "../../components/InputEmail";
 import InputPassword from "../../components/InputPassword";
 import Button from "../../components/CustomButton";
 import axios from 'axios';
+const emailRegExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+
 class SignupForm extends React.Component {
   constructor(props) {
     super(props);
@@ -57,12 +59,22 @@ class SignupForm extends React.Component {
     );
   }
   requestSignup(event) {
-    console.log(this.state.email)
+    if(!this.state.email) {
+      alert('이메일을 입력해 주십시오.')
+      return;
+    }
+    if(!emailRegExp.test(this.state.email)) {
+      alert('이메일 형식이 일치하지 않습니다.')
+      return;
+    }
+    if(!this.state.password) {
+      alert('비밀번호를 입력해 주십시오.');
+      return;
+    }
     axios.post('http://localhost:3000/user/createUser',{
       email: this.state.email,
       pw: this.state.password
     }).then((response)=>{
-      console.log(response);
       if(response.status === 200) {
         this.props.fetchIsLoginedActionCreator({ isLogined: true });
       }
