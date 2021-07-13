@@ -1,6 +1,6 @@
 import React from "react";
 import "./FindPassForm.scss";
-import InputText from "../../components/InputText";
+import InputEmail from "../../components/InputEmail";
 import InputPassword from "../../components/InputPassword";
 import Button from "../../components/CustomButton";
 import CardUI from "../../components/CardUI";
@@ -35,7 +35,7 @@ class FindPassForm extends React.Component {
         <div className="form" ref={this.getEmailStep}>
           <h2 className="title">FindPass</h2>
           <p>{this.state.guideText}</p>
-          <InputText
+          <InputEmail
             placeholder="User Email"
             value={this.state.email}
             onChange={(e) => {
@@ -43,8 +43,8 @@ class FindPassForm extends React.Component {
             }}
           />
           <div className="link-box">
-            go to{" "}
-            <Link className="link" to="/signin">
+            go to
+            <Link className="link" to="/login">
               signin
             </Link>
           </div>
@@ -54,7 +54,7 @@ class FindPassForm extends React.Component {
           <h2 className="title">FindPass</h2>
           <p>{this.state.guideText}</p>
           <Timer time={this.state.time} onTimeOver={this.handleTimeOver} />
-          <InputText
+          <InputEmail
             placeholder="codekey"
             value={this.state.codeKey}
             onChange={(e) => {
@@ -63,7 +63,7 @@ class FindPassForm extends React.Component {
           />
           <div className="link-box">
             go to{" "}
-            <Link className="link" to="/signin">
+            <Link className="link" to="/login">
               signin
             </Link>
           </div>
@@ -81,7 +81,7 @@ class FindPassForm extends React.Component {
           />
           <div className="link-box">
             go to{" "}
-            <Link className="link" to="/signin">
+            <Link className="link" to="/login">
               signin
             </Link>
           </div>
@@ -141,7 +141,7 @@ class FindPassForm extends React.Component {
   }
   requestChangePassword() {
     axios
-      .post("http://localhost:3000/user/updatePassword", {
+      .patch("http://localhost:3000/user/updatePassword", {
         pw: this.state.newPassword,
       })
       .then((response) => {

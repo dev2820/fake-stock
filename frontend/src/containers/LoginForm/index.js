@@ -3,7 +3,7 @@ import CardUI from "../../components/CardUI";
 import Button from "../../components/CustomButton";
 import { Link, Redirect } from "react-router-dom";
 
-import InputText from "../../components/InputText";
+import InputEmail from "../../components/InputEmail";
 import InputPassword from "../../components/InputPassword";
 import axios from "axios";
 
@@ -48,14 +48,9 @@ const LoginForm = () => {
 
   return (
     <CardUI>
-      <div className="links">
-        <Link className="link" to="/">
-          Home
-        </Link>
-      </div>
       <div className="form">
         <h2 className="title">LOG IN</h2>
-        <InputText
+        <InputEmail
           placeholder="User Email"
           value={email}
           onChange={onChangeEmail}

@@ -1,0 +1,42 @@
+div.form-input-email {
+    position:relative;
+    margin-top:20px;
+}
+input[type="email"] {
+    width:100%;
+    border:none;
+    border-bottom:1px solid #121212;
+    padding:10px 5px;
+    box-sizing: border-box;
+    height:40px;
+    font-size:1.1rem;
+    &:focus {
+        outline:none;
+        border-bottom:1px solid #892CDC;
+    }
+    &:focus ~ label,
+    &.active ~ label {
+        top:-20px;
+        font-size:14px;
+        transition:0.2s;
+        color:#892CDC;
+    }
+}
+label {
+    position:absolute;
+    pointer-events:none;
+    color:#cccccc;
+    left:5px;
+    top:10px;
+    transition:0.2s;
+}
+input.happyEmoji{
+    background:url('../../assets/images/happy.png');
+    background-repeat: no-repeat;
+    background-position: right;
+}
+input.sadEmoji{
+    background:url('../../assets/images/sad.png');
+    background-repeat: no-repeat;
+    background-position: right;
+}
