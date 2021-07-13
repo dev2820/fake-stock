@@ -2,6 +2,8 @@ import React, { useState, useCallback, useRef } from "react";
 import CardUI from "../../components/CardUI";
 import Button from "../../components/CustomButton";
 import { Link, Redirect } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { changeLoginState } from "../../modules/userReducer";
 
 import InputEmail from "../../components/InputEmail";
 import InputPassword from "../../components/InputPassword";
@@ -10,10 +12,14 @@ import axios from "axios";
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLogin, setIsLogin] = useState(false);
 
   const userEmail = useRef("");
   const userPassword = useRef("");
+  const { isLogin } = useSelector(({ userReducer }) => ({
+    isLogin: userReducer.islogined,
+  }));
+  console.log(isLogin);
+  const dispatch = useDispatch();
 
   const onChangeEmail = useCallback((e) => {
     setEmail(e.target.value);
@@ -25,9 +31,7 @@ const LoginForm = () => {
   }, []);
 
   const onClick = useCallback(() => {
-    console.log(isLogin);
-    setIsLogin(true);
-    // console.log(isLogin);
+    dispatch(changeLoginState());
 
     axios
       .post("http://localhost:3000/user/login", {
@@ -38,13 +42,13 @@ const LoginForm = () => {
         console.log(response);
         if (response.status === 200) {
           console.log("confirmed");
-          // setIsLogin(true);
+          dispatch(changeLoginState());
         } else console.log("login error");
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [isLogin]);
+  }, [dispatch]);
 
   return (
     <CardUI>
