@@ -43,7 +43,7 @@ class FindPassForm extends React.Component {
             }}
           />
           <div className="link-box">
-            go to
+            go to{" "}
             <Link className="link" to="/login">
               signin
             </Link>
@@ -101,11 +101,13 @@ class FindPassForm extends React.Component {
       .then((response) => {
         if (response.status === 200) {
           this.getEmailStep.current.classList.add("hidden");
-          this.confirmCodeKeyStep.current.classList.remove("hidden");
-          this.setState({
-            guideText: "이메일로 전송된 확인 코드를 입력해주세요",
-          });
-          this.startTimer(60 * 5);
+          setTimeout(()=>{
+            this.confirmCodeKeyStep.current.classList.remove("hidden");
+            this.setState({
+              guideText: "이메일로 전송된 확인 코드를 입력해주세요",
+            });
+            this.startTimer(60 * 5);
+          },500);
         } else {
           this.setState({
             guideText: "이메일을 확인 후 재시도 해주십시오",
@@ -125,17 +127,18 @@ class FindPassForm extends React.Component {
       .then((response) => {
         if (response.status === 200) {
           this.confirmCodeKeyStep.current.classList.add("hidden");
-          this.changePassStep.current.classList.remove("hidden");
-          this.setState({
-            guideText: "새 비밀번호를 입력해주세요",
-          });
-        } else {
-          this.setState({
-            guideText: "코드가 일치하지 않습니다.",
-          });
+          setTimeout(()=>{
+            this.changePassStep.current.classList.remove("hidden");
+            this.setState({
+              guideText: "새 비밀번호를 입력해주세요",
+            });
+          },500);
         }
       })
       .catch((err) => {
+        this.setState({
+          guideText: err.response.data.message,
+        });
         console.error(err);
       });
   }

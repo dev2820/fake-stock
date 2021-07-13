@@ -6,6 +6,8 @@ div.form {
     padding:20px;
     display:flex;
     flex-direction:column;
+    transition:0.3s;
+    opacity:1;
     h2.title {
         font-size:3.5rem;
         text-align:center;
@@ -19,6 +21,8 @@ div.form {
 }
 
 .hidden {
+    transition:0.3s;
+    opacity:0;
     visibility:hidden;
     z-index:-1;
 }
