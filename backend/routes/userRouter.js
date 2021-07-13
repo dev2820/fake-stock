@@ -29,7 +29,6 @@ router.post('/login', async (req, res)=>{
 	const pw = req.body.pw;
 	if(!(email && pw))
 		return res.status(400).send('no input');
-	
 	if(!await db.isExist(email))
 		return res.status(400).send('불일치'); // email 불일치
 
@@ -125,16 +124,16 @@ router.get('/sendConfirmCode', async (req, res)=>{
 router.post('/checkConfirmCode', (req, res)=>{
 	const email = req.body.email;
 	if(!client.exists(email)) {
-		res.status(400).send('만료됨');
+		res.status(400).send({message:'시간이 초과되었습니다.'});
 	}
 	else {
 		client.get(email,(err,codeKey)=>{
 			if(codeKey === req.body.codeKey) {
 				client.del(email);
-				res.status(200).send('success');
+				res.status(200).send({message:'성공했습니다.'});
 			}
 			else {
-				res.status(400).send('failed');
+				res.status(400).json({message:'코드가 일치하지 않습니다.'});
 			}
 		});
 	}
