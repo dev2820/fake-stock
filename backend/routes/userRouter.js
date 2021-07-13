@@ -15,10 +15,8 @@ router.post('/createUser',async (req, res) => {
 	const pw = req.body.pw;
 	if(!(email && pw))
 		return res.status(400).send('no input');
-	
 	if(await db.isExist(email))
 		return res.status(400); // email 존재
-
 	const result = await db.insert(email, pw);
 	if(result)
 		return res.send('성공');
@@ -66,7 +64,6 @@ router.patch('/updatePassword', jwt.jwtCheckMiddleWare, async (req, res)=>{
 		
 	if(!await db.isExist(req.body.userId))
 		return res.status(400); // email 불일치
-
 	const result = await db.updatePw(req.body.userId, pw);
 	if(result)
 		return res.send('update 성공');
