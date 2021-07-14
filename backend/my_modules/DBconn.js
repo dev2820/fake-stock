@@ -24,9 +24,8 @@ module.exports.readInfo = async (email) => {
 
 module.exports.isRightPw = async (email, pw)=>{
 	try{
-		const [[row]] = await pool.query(`select password, salt, '${email}' from ${dbTable}`);
+		const [[row]] = await pool.query(`SELECT password, salt FROM ${dbTable} WHERE email LIKE ${email}`);
 		const key = crypto.pbkdf2Sync(pw, row.salt, 1000, 60, 'sha512').toString('base64');
-
 		if(key === row.password){
 			return true;
 		}

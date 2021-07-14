@@ -32,7 +32,7 @@ router.post('/login', async (req, res)=>{
 	if(!await db.isExist(email))
 		return res.status(400).send('불일치'); // email 불일치
 
-	const row = await db.isRightPw(email, pw);
+	const row = await db.isRightPw(email, pw); 
 	if(row){
 		const token = jwt.createJwt(email)
 		res.cookie('token', token, {
