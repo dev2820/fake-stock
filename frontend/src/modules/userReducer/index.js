@@ -35,7 +35,7 @@ export default handleActions(
     },
     [FETCH_ACCESSTOKEN]: function(state,action) {
       return {
-        accessToken: action.payload
+        accessToken: action.payload.accessToken
       }
     }
     // [CHANGE_LOGIN_STATE]: function(state, action) {
