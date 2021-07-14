@@ -5,7 +5,7 @@ const FETCH_PASSWORD = "login/FETCH_PASSWORD";
 const FETCH_TEST = "login/FETCH_TEST";
 const FETCH_IS_LOGINED = "login/FETCH_IS_LOGINED";
 
-// const REQUIRE_LOGIN = "/login/REQUIRE_LOGIN";
+const CHANGE_LOGIN_STATE = "login/CHANGE_LOGIN_STATE";
 
 //state 초기값
 const initialState = {
@@ -21,7 +21,8 @@ export const fetchPasswordActionCreator = createAction(FETCH_PASSWORD);
 export const fetchTestActionCreator = createAction(FETCH_TEST);
 export const fetchIsLoginedActionCreator = createAction(FETCH_IS_LOGINED);
 
-// export const requireLogin = createAction(REQUIRE_LOGIN);
+export const changeLoginState = createAction(CHANGE_LOGIN_STATE);
+
 export default handleActions(
   {
     [FETCH_ID]: (state, action) => {
@@ -38,9 +39,13 @@ export default handleActions(
         isLogined: action.payload.isLogined,
       };
     },
-    // [REQUIRE_LOGIN]: (state, action) => {
-    //   return state.set("islogined", { isLogined: true });
-    // },
+    [CHANGE_LOGIN_STATE]: function(state, action) {
+      return {
+        ...state,
+        islogined: !state.isLogined,
+        // islogined: true,
+      };
+    },
   },
   initialState
 );

@@ -15,10 +15,8 @@ router.post('/createUser',async (req, res) => {
 	const pw = req.body.pw;
 	if(!(email && pw))
 		return res.status(400).send('no input');
-	
 	if(await db.isExist(email))
 		return res.status(400); // email 존재
-
 	const result = await db.insert(email, pw);
 	if(result)
 		return res.send('성공');
@@ -31,11 +29,10 @@ router.post('/login', async (req, res)=>{
 	const pw = req.body.pw;
 	if(!(email && pw))
 		return res.status(400).send('no input');
-	
 	if(!await db.isExist(email))
 		return res.status(400).send('불일치'); // email 불일치
 
-	const row = await db.isRightPw(email, pw);
+	const row = await db.isRightPw(email, pw); 
 	if(row){
 		const token = jwt.createJwt(email)
 		res.cookie('token', token, {
@@ -66,7 +63,6 @@ router.patch('/updatePassword',jwt.updatePwMiddleWare , jwt.jwtCheckMiddleWare, 
 		
 	if(!await db.isExist(req.body.userId))
 		return res.status(400); // email 불일치
-
 	const result = await db.updatePw(req.body.userId, pw);
 	if(result)
 		return res.send('update 성공');
@@ -128,16 +124,16 @@ router.get('/sendConfirmCode', async (req, res)=>{
 router.post('/checkConfirmCode', (req, res)=>{
 	const email = req.body.email;
 	if(!client.exists(email)) {
-		res.status(400).send('만료됨');
+		res.status(400).send({message:'시간이 초과되었습니다.'});
 	}
 	else {
 		client.get(email,(err,codeKey)=>{
 			if(codeKey === req.body.codeKey) {
 				client.del(email);
-				res.status(200).send('success');
+				res.status(200).send({message:'성공했습니다.'});
 			}
 			else {
-				res.status(400).send('failed');
+				res.status(400).json({message:'코드가 일치하지 않습니다.'});
 			}
 		});
 	}
