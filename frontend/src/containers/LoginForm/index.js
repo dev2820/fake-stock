@@ -3,7 +3,7 @@ import CardUI from "../../components/CardUI";
 import Button from "../../components/CustomButton";
 import { Link, Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { changeLoginState } from "../../modules/userReducer";
+import { fetchIsLoginedActionCreator } from "../../modules/userReducer";
 
 import InputEmail from "../../components/InputEmail";
 import InputPassword from "../../components/InputPassword";
@@ -26,7 +26,7 @@ const LoginForm = () => {
   }, []);
 
   const onClick = useCallback(() => {
-    // dispatch(changeLoginState());
+    dispatch(fetchIsLoginedActionCreator({ isLogined: true }));
 
     axios
       .post("http://localhost:3000/user/login", {
@@ -37,7 +37,7 @@ const LoginForm = () => {
         console.log(response);
         if (response.status === 200) {
           // console.log("confirmed");
-          dispatch(changeLoginState());
+          dispatch(fetchIsLoginedActionCreator({ isLogined: true }));
         } else console.log("login error");
       })
       .catch((error) => {
