@@ -96,7 +96,7 @@ router.delete('/deleteUser', jwt.jwtCheckMiddleWare, async (req, res)=>{
 });
 
 router.get('/refreshToken', jwt.jwtCheckMiddleWare, (req, res)=>{
-	const access = req.signedCookies.access	
+	const access = req.signedCookies.access;
 	res.status(200).json({access})
 })
 

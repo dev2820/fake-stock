@@ -43,7 +43,7 @@ module.exports.jwtCheckMiddleWare = (req, res, next)=>{
 		else if(req.signedCookies.refresh){
 			const refresh = checkRefresh(req.signedCookies.refresh);
 			req.body.userId = refresh;
-			req.cookie.access = this.createAccessJwt(refresh);
+			req.signedCookies.access = this.createAccessJwt(refresh);
 			next()
 		}
 		else
