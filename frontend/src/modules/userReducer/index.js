@@ -3,25 +3,21 @@ import { createAction, handleActions } from "redux-actions";
 const FETCH_ID = "login/FETCH_ID";
 const FETCH_PASSWORD = "login/FETCH_PASSWORD";
 const FETCH_TEST = "login/FETCH_TEST";
-const FETCH_IS_LOGINED = "login/FETCH_IS_LOGINED";
-
-const CHANGE_LOGIN_STATE = "login/CHANGE_LOGIN_STATE";
+const FETCH_ACCESSTOKEN =  "login/FETCH_ACCESSTOKEN";
 
 //state 초기값
 const initialState = {
   id: "",
   password: "",
   test: "test code",
-  isLogined: false,
+  accessToken: null,
 };
 
 //reducer
 export const fetchIdActionCreator = createAction(FETCH_ID);
 export const fetchPasswordActionCreator = createAction(FETCH_PASSWORD);
 export const fetchTestActionCreator = createAction(FETCH_TEST);
-export const fetchIsLoginedActionCreator = createAction(FETCH_IS_LOGINED);
-
-export const changeLoginState = createAction(CHANGE_LOGIN_STATE);
+export const fetchAccessTokenActionCreator = createAction(FETCH_ACCESSTOKEN);
 
 export default handleActions(
   {
@@ -34,18 +30,11 @@ export default handleActions(
         test: action.payload.text,
       };
     },
-    [FETCH_IS_LOGINED]: function(state, action) {
+    [FETCH_ACCESSTOKEN]: function(state,action) {
       return {
-        isLogined: action.payload.isLogined,
-      };
-    },
-    [CHANGE_LOGIN_STATE]: function(state, action) {
-      return {
-        ...state,
-        isLogined: !state.isLogined,
-        // islogined: true,
-      };
-    },
+        accessToken: action.payload
+      }
+    }
   },
   initialState
 );
