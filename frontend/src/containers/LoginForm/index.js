@@ -14,7 +14,7 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
 
   const { isLogin } = useSelector(({ userReducer }) => ({
-    isLogin: userReducer.islogined,
+    isLogin: userReducer.isLogined,
   }));
   console.log(isLogin);
   const dispatch = useDispatch();
