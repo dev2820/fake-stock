@@ -73,7 +73,12 @@ router.patch('/updatePassword',jwt.updatePwMiddleWare , jwt.jwtCheckMiddleWare, 
 });
 
 router.delete('/deleteUser', jwt.jwtCheckMiddleWare, async (req, res)=>{
-	res.clearCookie('token', {
+	res.clearCookie('refresh', {
+		httpOnly: true,
+		signed: true,
+		path: '/'
+	});
+	res.clearCookie('refresh', {
 		httpOnly: true,
 		signed: true,
 		path: '/'
@@ -90,6 +95,10 @@ router.delete('/deleteUser', jwt.jwtCheckMiddleWare, async (req, res)=>{
 		return res.status(401).send('삭제 실패');
 });
 
+router.get('/refreshToken', jwt.jwtCheckMiddleWare, (req, res)=>{
+	const access = req.signedCookies.access;
+	res.status(200).json({access})
+})
 
 router.get('/sendConfirmCode', async (req, res)=>{
 	try {
