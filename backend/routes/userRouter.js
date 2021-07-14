@@ -130,6 +130,11 @@ router.post('/checkConfirmCode', (req, res)=>{
 		client.get(email,(err,codeKey)=>{
 			if(codeKey === req.body.codeKey) {
 				client.del(email);
+				const token = jwt.createJwt(email)
+				res.cookie('findpass', token, {
+					httpOnly: true,
+					signed: true,
+				})
 				res.status(200).send({message:'성공했습니다.'});
 			}
 			else {
