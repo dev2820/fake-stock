@@ -64,4 +64,3 @@ module.exports.updatePwMiddleWare = (req, res, next)=>{
 		next();
 	})
 }
-
