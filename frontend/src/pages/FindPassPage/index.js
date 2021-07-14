@@ -13,7 +13,7 @@ class FindPassPage extends React.Component {
         <div className="center">
           <FindPassForm />
         </div>
-        {!this.props.accessToken && <Redirect to="/" />}
+        {!!this.props.accessToken && <Redirect to="/" />}
       </div>
     );
   }
