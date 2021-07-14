@@ -27,11 +27,12 @@ const LoginForm = () => {
   const refreshToken = useCallback(() => {
     axios.post('http://localhost:3000/user/refreshToken').then(response=>{
       //reducer accessToken 갱신
+      console.log(response.data)
       dispatch(fetchAccessTokenActionCreator({ accessToken: response.data.access }));
       axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.access}`;
       setTimeout(()=>{
         refreshToken();
-      },response.data.date - 1000*60);
+      },response.data.date*1000 - 1000*30);
     });
   },[dispatch]);
   const onClick = useCallback(() => {
@@ -41,14 +42,14 @@ const LoginForm = () => {
         pw: password,
       })
       .then((response) => {
-        console.log(response);
+        console.log(1,response);
         if (response.status === 200) {
           // console.log("confirmed");
           dispatch(fetchAccessTokenActionCreator({ accessToken: response.data.access }));
           axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.access}`;
           setTimeout(()=>{
               refreshToken();
-          },response.data.date*1000 - 1000*60);
+          },response.data.date*1000 - 1000*30);
         } else console.log("login error");
       })
       .catch((error) => {
