@@ -2,6 +2,8 @@ import "./loginPage.css";
 import React from "react";
 import LoginForm from "../../containers/LoginForm";
 import { fetchAccessTokenActionCreator } from "../../modules/userReducer";
+import { Redirect } from "react-router";
+import { connect } from "react-redux";
 import Wave from "../../components/Wave";
 
 class LoginPage extends React.Component {
@@ -12,7 +14,7 @@ class LoginPage extends React.Component {
         <div className="center">
           <LoginForm />
         </div>
-        {!props.accessToken && <Redirect to="/" />}
+        {this.props.accessToken !== null && <Redirect to="/" />}
       </div>
     );
   }
@@ -20,9 +22,9 @@ class LoginPage extends React.Component {
 
 export default connect(
   ({ userReducer }) => ({
-      accessToken: userReducer.accessToken,
+    accessToken: userReducer.accessToken,
   }),
   {
-      fetchAccessTokenActionCreator,
+    fetchAccessTokenActionCreator,
   }
 )(LoginPage);
