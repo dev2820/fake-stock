@@ -45,7 +45,6 @@ module.exports.jwtCheckMiddleWare = (req, res, next)=>{
 		else if(req.signedCookies.refresh){
 			const refresh = checkRefresh(req.signedCookies.refresh);
 			req.body.userId = refresh;
-			req.signedCookies.access = this.createAccessJwt(refresh);
 			next()
 		}
 		else
@@ -59,10 +58,10 @@ module.exports.jwtCheckMiddleWare = (req, res, next)=>{
 
 module.exports.updatePwMiddleWare = (req, res, next)=>{
 	if(!req.signedCookies.findpass)
-		next();
+		next();decoded.id
 
 	jwt.verify(token, suuuuperSecret, (err, decoded)=>{
-		req.cookie.access = jwt.sign({id: decoded.id}, suuuuperSecret, { expiresIn: '1h' });
+		req.signedCookies.refresh = this.createRefreshJwt(decoded.id);
 		next();
 	})
 }
