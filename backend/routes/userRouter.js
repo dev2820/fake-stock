@@ -40,7 +40,7 @@ router.post('/login', async (req, res)=>{
 			httpOnly: true,
 			signed: true,
 		})
-		return res.status(200).json({access}) // 로그인 성공
+		return res.status(200).json({access,date:60*24}) // 로그인 성공
 	}
 	else
 		return res.status(401).send('비밀번호 불일치')
@@ -146,4 +146,7 @@ router.post('/checkConfirmCode', (req, res)=>{
 	}
 });
 
+router.get('/testJWT', jwt.jwtCheckMiddleWare, (req,res)=> {
+	res.status(200).json({message:'success'});
+})
 module.exports = router;

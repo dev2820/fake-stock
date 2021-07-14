@@ -13,7 +13,7 @@ class SignupPage extends React.Component {
         <div className="center">
           <SignupForm />
         </div>
-        {!this.props.accessToken === null && <Redirect to="/" />}
+        {!(this.props.accessToken === null) && <Redirect to="/" />}
       </div>
     );
   }

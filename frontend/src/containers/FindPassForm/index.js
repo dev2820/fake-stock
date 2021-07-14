@@ -5,7 +5,7 @@ import InputPassword from "../../components/InputPassword";
 import Button from "../../components/CustomButton";
 import CardUI from "../../components/CardUI";
 import Timer from "../../components/Timer";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 class FindPassForm extends React.Component {

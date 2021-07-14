@@ -35,6 +35,7 @@ module.exports.createAccessJwt = (email)=>{
 
 module.exports.jwtCheckMiddleWare = (req, res, next)=>{
 	try{
+		console.log(req.headers.authorization)
 		const result = checkAccess(req.signedCookies.access);
 		const refresh = checkRefresh(req.signedCookies.refresh);
 		if(result){

@@ -24,10 +24,17 @@ const LoginForm = () => {
   const onChangePassword = useCallback((e) => {
     setPassword(e.target.value);
   }, []);
-
+  const refreshToken = useCallback(() => {
+    axios.post('http://localhost:3000/user/refreshToken').then(response=>{
+      //reducer accessToken 갱신
+      dispatch(fetchAccessTokenActionCreator({ accessToken: response.data.access }));
+      axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.access}`;
+      setTimeout(()=>{
+        refreshToken();
+      },response.data.date - 1000*60);
+    });
+  },[dispatch]);
   const onClick = useCallback(() => {
-    dispatch(fetchAccessTokenActionCreator({ accessToken: true }));
-
     axios
       .post("http://localhost:3000/user/login", {
         email: email,
@@ -37,13 +44,18 @@ const LoginForm = () => {
         console.log(response);
         if (response.status === 200) {
           // console.log("confirmed");
-          dispatch(fetchAccessTokenActionCreator({ accessToken: true }));
+          dispatch(fetchAccessTokenActionCreator({ accessToken: response.data.access }));
+          axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.access}`;
+          setTimeout(()=>{
+              refreshToken();
+          },response.data.date*1000 - 1000*60);
         } else console.log("login error");
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [email, password, dispatch]);
+  }, [email, password,refreshToken, dispatch]);
+
 
   return (
     <CardUI>
