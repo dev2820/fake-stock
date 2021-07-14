@@ -97,7 +97,11 @@ router.delete('/deleteUser', jwt.jwtCheckMiddleWare, async (req, res)=>{
 
 router.post('/refreshToken', jwt.jwtCheckMiddleWare, (req, res)=>{
 	const access = jwt.createAccessJwt(req.body.userId);
+<<<<<<< HEAD
 	res.status(200).json({access, date:60})
+=======
+	res.status(200).json({access,date:60})
+>>>>>>> 906cbaaae1aa596833c82bd0b0493f6b0848cb99
 })
 
 router.get('/sendConfirmCode', async (req, res)=>{
