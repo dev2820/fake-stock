@@ -1,6 +1,8 @@
 import React from 'react';
 import FindPassForm from '../../containers/FindPassForm'
 import Wave from '../../components/Wave'
+import { fetchAccessTokenActionCreator } from "../../modules/userReducer";
+
 class FindPassPage extends React.Component {
     render() {
         return (
@@ -9,9 +11,16 @@ class FindPassPage extends React.Component {
                 <div className="center">
                     <FindPassForm/>
                 </div>
+                {!this.props.accessToken && <Redirect to="/" />}
             </div>
         )
     }
 }
-
-export default FindPassPage;
+export default connect(
+    ({ userReducer }) => ({
+        accessToken: userReducer.accessToken,
+    }),
+    {
+        fetchAccessTokenActionCreator,
+    }
+)(FindPassPage);

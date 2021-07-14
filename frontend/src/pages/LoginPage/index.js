@@ -1,6 +1,7 @@
 import "./loginPage.css";
 import React from "react";
 import LoginForm from "../../containers/LoginForm";
+import { fetchAccessTokenActionCreator } from "../../modules/userReducer";
 import Wave from "../../components/Wave";
 
 class LoginPage extends React.Component {
@@ -11,9 +12,17 @@ class LoginPage extends React.Component {
         <div className="center">
           <LoginForm />
         </div>
+        {!props.accessToken && <Redirect to="/" />}
       </div>
     );
   }
 }
 
-export default LoginPage;
+export default connect(
+  ({ userReducer }) => ({
+      accessToken: userReducer.accessToken,
+  }),
+  {
+      fetchAccessTokenActionCreator,
+  }
+)(LoginPage);
