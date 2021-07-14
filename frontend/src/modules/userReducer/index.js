@@ -42,7 +42,7 @@ export default handleActions(
     [CHANGE_LOGIN_STATE]: function(state, action) {
       return {
         ...state,
-        islogined: !state.isLogined,
+        isLogined: !state.isLogined,
         // islogined: true,
       };
     },

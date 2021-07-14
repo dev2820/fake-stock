@@ -14,7 +14,7 @@ const pool = mariadb.createPool({
 
 module.exports.readInfo = async (email) => {
 	try{
-		const [[row]] = await pool.query(`select email, create_at, '${email}' from ${dbTable}`);
+		const [[row]] = await pool.query(`select email, create_at from ${dbTable} WHERE (email = '${email}')`);
 		return row;
 	}catch(err){
 		console.log(err);

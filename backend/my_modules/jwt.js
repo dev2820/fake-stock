@@ -34,3 +34,9 @@ module.exports.jwtCheckMiddleWare = (req, res, next)=>{
 		res.status(401).send('jwt 토큰 모듈 오류')
 	}
 }
+
+module.exports.updatePwMiddleWare = (req, res, next)=>{
+	if(req.body.email)
+		req.signedCookies.token = jwt.sign({id: req.body.email}, suuuuperSecret);
+	next();
+}

@@ -16,7 +16,6 @@ const LoginForm = () => {
   const { isLogin } = useSelector(({ userReducer }) => ({
     isLogin: userReducer.isLogined,
   }));
-  console.log(isLogin);
   const dispatch = useDispatch();
 
   const onChangeEmail = useCallback((e) => {
@@ -37,7 +36,7 @@ const LoginForm = () => {
       .then((response) => {
         console.log(response);
         if (response.status === 200) {
-          console.log("confirmed");
+          // console.log("confirmed");
           dispatch(changeLoginState());
         } else console.log("login error");
       })

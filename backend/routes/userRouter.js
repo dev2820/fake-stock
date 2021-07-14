@@ -56,7 +56,7 @@ router.get('/getUserInfo', jwt.jwtCheckMiddleWare, async (req, res)=>{
 		res.status(400).send('정보없음')
 });
 
-router.patch('/updatePassword', jwt.jwtCheckMiddleWare, async (req, res)=>{
+router.patch('/updatePassword',jwt.updatePwMiddleWare , jwt.jwtCheckMiddleWare, async (req, res)=>{
 	const pw = req.body.pw;
 	if(!pw)
 		return res.status(400).send('no input');
