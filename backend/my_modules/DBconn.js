@@ -14,7 +14,7 @@ const pool = mariadb.createPool({
 
 module.exports.readInfo = async (email) => {
 	try{
-		const [[row]] = await pool.query(`select email, create_at, '${email}' from ${dbTable}`);
+		const [[row]] = await pool.query(`select email, create_at from ${dbTable} WHERE (email = '${email}')`);
 		return row;
 	}catch(err){
 		console.log(err);
@@ -24,7 +24,7 @@ module.exports.readInfo = async (email) => {
 
 module.exports.isRightPw = async (email, pw)=>{
 	try{
-		const [[row]] = await pool.query(`select password, salt, '${email}' from ${dbTable}`);
+		const [[row]] = await pool.query(`select password, salt from ${dbTable} WHERE (email = '${email}')`);
 		const key = crypto.pbkdf2Sync(pw, row.salt, 1000, 60, 'sha512').toString('base64');
 
 		if(key === row.password){
