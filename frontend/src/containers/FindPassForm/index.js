@@ -16,6 +16,7 @@ class FindPassForm extends React.Component {
       codeKey: "",
       newPassword: "",
       time: 60 * 5,
+      timer: null,
       guideText: "등록한 이메일을 입력해주세요.",
     };
     this.gotoConfirmCodeKeyStep = this.gotoConfirmCodeKeyStep.bind(this);
@@ -131,6 +132,11 @@ class FindPassForm extends React.Component {
               guideText: "새 비밀번호를 입력해주세요",
             });
           },500);
+          clearInterval(this.state.timer);
+          this.setState({
+            timer: null,
+            time:-1
+          })
         }
       })
       .catch((err) => {
@@ -158,6 +164,10 @@ class FindPassForm extends React.Component {
       });
   }
   handleTimeOver() {
+    clearInterval(this.state.timer);
+    this.setState({
+      timer: null
+    })
     alert("시간이 초과되었습니다. 이메일 입력 페이지로 돌아갑니다.");
     this.confirmCodeKeyStep.current.classList.add("hidden");
     this.getEmailStep.current.classList.remove("hidden");
@@ -165,17 +175,13 @@ class FindPassForm extends React.Component {
   startTimer(second) {
     this.setState({
       time: second,
+      timer: setInterval(() => {
+        second--;
+        this.setState({
+          time: second,
+        });
+      }, 1000)
     });
-    let remainTime = second;
-    const timer = setInterval(() => {
-      remainTime--;
-      if (remainTime === 0) {
-        clearInterval(timer);
-      }
-      this.setState({
-        time: remainTime,
-      });
-    }, 1000);
   }
 }
 
