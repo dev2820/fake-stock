@@ -35,15 +35,15 @@ module.exports.createAccessJwt = (email)=>{
 
 module.exports.jwtCheckMiddleWare = (req, res, next)=>{
 	try{
-		const result = checkAccess(req.signedCookies.access);
-		const refresh = checkRefresh(req.signedCookies.refresh);
-		if(result){
-			req.body.userId = result;
+		if(req.cookie && req.cookie.access){
+			const access = checkAccess(req.cookie.access);
+			req.body.userId = access;
 			next();
 		}
-		else if(refresh){
+		else if(req.signedCookies.refresh){
+			const refresh = checkRefresh(req.signedCookies.refresh);
 			req.body.userId = refresh;
-			req.signedCookies.access = this.createAccessJwt(refresh);
+			req.cookie.access = this.createAccessJwt(refresh);
 			next()
 		}
 		else
@@ -60,7 +60,7 @@ module.exports.updatePwMiddleWare = (req, res, next)=>{
 		next();
 
 	jwt.verify(token, suuuuperSecret, (err, decoded)=>{
-		req.signedCookies.access = jwt.sign({id: decoded.id}, suuuuperSecret, { expiresIn: '1h' });
+		req.cookie.access = jwt.sign({id: decoded.id}, suuuuperSecret, { expiresIn: '1h' });
 		next();
 	})
 }
