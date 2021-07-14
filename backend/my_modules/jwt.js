@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const suuuuperSecret = process.env.SECRET_KEY;
-
+const accessTokenExpireTime = '1m';
 checkRefresh = (token)=>{
 	if(token == null)
 		return null;
@@ -17,7 +17,7 @@ checkAccess = (token)=>{
 	if(token == null)
 		return null;
 	try{
-		return jwt.verify(token, suuuuperSecret, {expiresIn: '1h'}, (err, decoded)=>{
+		return jwt.verify(token, suuuuperSecret, {expiresIn: accessTokenExpireTime }, (err, decoded)=>{
 			return decoded.id;
 		})
 	}catch(err){
@@ -30,14 +30,15 @@ module.exports.createRefreshJwt = (email)=>{
 }
 
 module.exports.createAccessJwt = (email)=>{
-	return jwt.sign({id: email}, suuuuperSecret, { expiresIn: '1h' })
+	return jwt.sign({id: email}, suuuuperSecret, { expiresIn: accessTokenExpireTime })
 }
 
 module.exports.jwtCheckMiddleWare = (req, res, next)=>{
 	try{
-		console.log(req.headers.authorization)
-		if(req.cookie && req.cookie.access){
-			const access = checkAccess(req.cookie.access);
+		//console.log(req.headers.authorization)
+		if(req.headers.authorization){
+			const access = checkAccess(req.headers.authorization.split('Bearer ')[1]);
+			//refresh token을 이용해 토큰 재발급
 			req.body.userId = access;
 			next();
 		}

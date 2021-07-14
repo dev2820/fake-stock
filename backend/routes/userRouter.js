@@ -40,7 +40,7 @@ router.post('/login', async (req, res)=>{
 			httpOnly: true,
 			signed: true,
 		})
-		return res.status(200).json({access,date:60*24}) // 로그인 성공
+		return res.status(200).json({access,date:60}) // 로그인 성공
 	}
 	else
 		return res.status(401).send('비밀번호 불일치')
@@ -95,9 +95,9 @@ router.delete('/deleteUser', jwt.jwtCheckMiddleWare, async (req, res)=>{
 		return res.status(401).send('삭제 실패');
 });
 
-router.get('/refreshToken', jwt.jwtCheckMiddleWare, (req, res)=>{
+router.post('/refreshToken', jwt.jwtCheckMiddleWare, (req, res)=>{
 	const access = req.signedCookies.access;
-	res.status(200).json({access})
+	res.status(200).json({access,date:60})
 })
 
 router.get('/sendConfirmCode', async (req, res)=>{

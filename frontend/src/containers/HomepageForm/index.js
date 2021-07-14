@@ -7,16 +7,16 @@ const HomePage = () => {
   // const { isAccessToken } = useSelector(({ userReducer }) => ({
   //   isAccessToken: userReducer.accessToken,
   // }));
-  const { accessToken } = useSelector(({ userReducer }) => ({
-    accessToken: userReducer.accessToken,
-  }));
-  const test = () => {
-    console.log(accessToken)
-    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-    axios.get('http://localhost:3000/user/testJWT').then(res=>{
-      console.log(res);
-    })
-  }
+  // const { accessToken } = useSelector(({ userReducer }) => ({
+  //   accessToken: userReducer.accessToken,
+  // }));
+  // const test = () => {
+  //   console.log(accessToken)
+  //   axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+  //   axios.get('http://localhost:3000/user/testJWT').then(res=>{
+  //     console.log(res);
+  //   })
+  // }
   return (
     <div>
       {/* {isAccessToken || <Redirect to="/login" />} */}
@@ -33,7 +33,7 @@ const HomePage = () => {
           SIGN UP
         </Link>
       </div>
-      <button onClick={test}>test</button>
+      {/* <button onClick={test}>test</button> */}
     </div>
   );
 };
