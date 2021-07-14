@@ -3,7 +3,10 @@ import { createAction, handleActions } from "redux-actions";
 const FETCH_ID = "login/FETCH_ID";
 const FETCH_PASSWORD = "login/FETCH_PASSWORD";
 const FETCH_TEST = "login/FETCH_TEST";
-const FETCH_ACCESSTOKEN =  "login/FETCH_ACCESSTOKEN";
+const FETCH_ACCESSTOKEN = "login/ACCESSTOKEN"
+//const FETCH_IS_LOGINED = "login/FETCH_IS_LOGINED";
+
+// const CHANGE_LOGIN_STATE = "login/CHANGE_LOGIN_STATE";
 
 //state 초기값
 const initialState = {
@@ -35,6 +38,13 @@ export default handleActions(
         accessToken: action.payload
       }
     }
+    // [CHANGE_LOGIN_STATE]: function(state, action) {
+    //   return {
+    //     ...state,
+    //     isLogined: !state.isLogined,
+    //     // islogined: true,
+    //   };
+    // },
   },
   initialState
 );
