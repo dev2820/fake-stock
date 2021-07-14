@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback } from "react";
 import CardUI from "../../components/CardUI";
 import Button from "../../components/CustomButton";
 import { Link, Redirect } from "react-router-dom";
@@ -13,8 +13,6 @@ const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const userEmail = useRef("");
-  const userPassword = useRef("");
   const { isLogin } = useSelector(({ userReducer }) => ({
     isLogin: userReducer.islogined,
   }));
@@ -23,20 +21,18 @@ const LoginForm = () => {
 
   const onChangeEmail = useCallback((e) => {
     setEmail(e.target.value);
-    userEmail.current = e.target.value;
   }, []);
   const onChangePassword = useCallback((e) => {
     setPassword(e.target.value);
-    userPassword.current = e.target.value;
   }, []);
 
   const onClick = useCallback(() => {
-    dispatch(changeLoginState());
+    // dispatch(changeLoginState());
 
     axios
       .post("http://localhost:3000/user/login", {
-        email: userEmail,
-        pw: userPassword,
+        email: email,
+        pw: password,
       })
       .then((response) => {
         console.log(response);
@@ -48,7 +44,7 @@ const LoginForm = () => {
       .catch((error) => {
         console.log(error);
       });
-  }, [dispatch]);
+  }, [email, password, dispatch]);
 
   return (
     <CardUI>
