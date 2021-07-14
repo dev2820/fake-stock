@@ -15,7 +15,6 @@ class FindPassForm extends React.Component {
       email: "",
       codeKey: "",
       newPassword: "",
-      goHome: false,
       time: 60 * 5,
       guideText: "등록한 이메일을 입력해주세요.",
     };
@@ -87,7 +86,6 @@ class FindPassForm extends React.Component {
           </div>
           <Button onClick={this.requestChangePassword}>확인</Button>
         </div>
-        {this.state.goHome && <Redirect to="/" />}
       </CardUI>
     );
   }
@@ -150,10 +148,6 @@ class FindPassForm extends React.Component {
       })
       .then((response) => {
         if (response.status === 200) {
-          this.setState({
-            goHome: true,
-          });
-        } else {
           this.setState({
             guideText: "비밀번호 변경에 실패했습니다.",
           });
