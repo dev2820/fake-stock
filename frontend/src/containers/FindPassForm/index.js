@@ -145,6 +145,7 @@ class FindPassForm extends React.Component {
   requestChangePassword() {
     axios
       .patch("http://localhost:3000/user/updatePassword", {
+        email:this.state.email,
         pw: this.state.newPassword,
       })
       .then((response) => {
