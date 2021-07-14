@@ -5,9 +5,9 @@ import InputPassword from "../../components/InputPassword";
 import Button from "../../components/CustomButton";
 import CardUI from "../../components/CardUI";
 import Timer from "../../components/Timer";
-import { Link } from "react-router-dom";
+import { Link,Redirect } from "react-router-dom";
 import axios from "axios";
-
+axios.defaults.withCredentials = true;
 class FindPassForm extends React.Component {
   constructor(props) {
     super(props);
@@ -17,6 +17,7 @@ class FindPassForm extends React.Component {
       newPassword: "",
       time: 60 * 5,
       timer: null,
+      goHome:false,
       guideText: "등록한 이메일을 입력해주세요.",
     };
     this.gotoConfirmCodeKeyStep = this.gotoConfirmCodeKeyStep.bind(this);
@@ -87,6 +88,7 @@ class FindPassForm extends React.Component {
           </div>
           <Button onClick={this.requestChangePassword}>확인</Button>
         </div>
+        {this.state.goHome && <Redirect to="login"/>}
       </CardUI>
     );
   }
@@ -155,11 +157,14 @@ class FindPassForm extends React.Component {
       .then((response) => {
         if (response.status === 200) {
           this.setState({
-            guideText: "비밀번호 변경에 실패했습니다.",
+            goHome: true,
           });
         }
       })
       .catch((err) => {
+        this.setState({
+          guideText: "비밀번호 변경에 실패했습니다.",
+        });
         console.error(err);
       });
   }

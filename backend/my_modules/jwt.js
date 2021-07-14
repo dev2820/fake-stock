@@ -57,10 +57,14 @@ module.exports.jwtCheckMiddleWare = (req, res, next)=>{
 }
 
 module.exports.updatePwMiddleWare = (req, res, next)=>{
+	console.log(req.signedCookies)
 	if(!req.signedCookies.findpass)
 		next();
-	jwt.verify(req.signedCookies.findpass, suuuuperSecret, (err, decoded)=>{
-		req.signedCookies.refresh = this.createRefreshJwt(decoded.id);
-		next();
-	})
+	else {
+		console.log(1,req.signedCookies.findpass)
+		jwt.verify(req.signedCookies.findpass, suuuuperSecret, (err, decoded)=>{
+			req.signedCookies.refresh = this.createRefreshJwt(decoded.id);
+			next();
+		})
+	}
 }

@@ -8,6 +8,7 @@ import { fetchAccessTokenActionCreator } from "../../modules/userReducer";
 import InputEmail from "../../components/InputEmail";
 import InputPassword from "../../components/InputPassword";
 import axios from "axios";
+axios.defaults.withCredentials = true;
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
