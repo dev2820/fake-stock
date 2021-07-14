@@ -34,12 +34,13 @@ router.post('/login', async (req, res)=>{
 
 	const row = await db.isRightPw(email, pw); 
 	if(row){
-		const token = jwt.createJwt(email)
-		res.cookie('token', token, {
+		const access = jwt.createAccessJwt(email);
+		const refresh = jwt.createRefreshJwt(email);
+		res.cookie('refresh', refresh, {
 			httpOnly: true,
 			signed: true,
 		})
-		return res.status(200).send('성공') // 로그인 성공
+		return res.status(200).json({access}) // 로그인 성공
 	}
 	else
 		return res.status(401).send('비밀번호 불일치')
@@ -63,6 +64,7 @@ router.patch('/updatePassword',jwt.updatePwMiddleWare , jwt.jwtCheckMiddleWare, 
 		
 	if(!await db.isExist(req.body.userId))
 		return res.status(400); // email 불일치
+
 	const result = await db.updatePw(req.body.userId, pw);
 	if(result)
 		return res.send('update 성공');
