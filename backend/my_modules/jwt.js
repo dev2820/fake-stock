@@ -36,7 +36,11 @@ module.exports.jwtCheckMiddleWare = (req, res, next)=>{
 }
 
 module.exports.updatePwMiddleWare = (req, res, next)=>{
-	if(req.body.email)
-		req.signedCookies.token = jwt.sign({id: req.body.email}, suuuuperSecret);
-	next();
+	if(!req.signedCookies.findpass)
+		next();
+
+	jwt.verify(token, suuuuperSecret, (err, decoded)=>{
+		req.signedCookies.token = jwt.sign({id: decoded.id}, suuuuperSecret);
+		next();
+	})
 }
