@@ -1,6 +1,5 @@
 import React from "react";
 import HomepageForm from "../../containers/HomepageForm";
-import Wave from "../../components/Wave";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router";
 
@@ -11,7 +10,6 @@ const Homepage = () => {
   console.log(accessToken)
   return (
     <div>
-      <Wave />
       <div className="center">
         <HomepageForm />
       </div>

@@ -1,6 +1,8 @@
 div.form-input-email {
     position:relative;
     margin-top:20px;
+    --primiary-theme-color: #FFEB33;
+    --primiary-text-color: #423630;
 }
 input[type="email"] {
     width:100%;
@@ -12,20 +14,20 @@ input[type="email"] {
     font-size:1.1rem;
     &:focus {
         outline:none;
-        border-bottom:1px solid #892CDC;
+        border-bottom:1px solid var(--primiary-text-color);
     }
     &:focus ~ label,
     &.active ~ label {
         top:-20px;
         font-size:14px;
         transition:0.2s;
-        color:#892CDC;
+        color:var(--primiary-text-color);
     }
 }
 label {
     position:absolute;
     pointer-events:none;
-    color:#cccccc;
+    color:#777777;
     left:5px;
     top:10px;
     transition:0.2s;
@@ -34,9 +36,11 @@ input.happyEmoji{
     background:url('../../assets/images/happy.png');
     background-repeat: no-repeat;
     background-position: right;
+    background-size:40px 100%;
 }
 input.sadEmoji{
     background:url('../../assets/images/sad.png');
     background-repeat: no-repeat;
     background-position: right;
+    background-size:40px 100%;
 }
