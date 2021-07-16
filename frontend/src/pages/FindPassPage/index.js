@@ -1,6 +1,7 @@
 import React from "react";
 import FindPassForm from "../../containers/FindPassForm";
-import { Redirect } from "react-router";
+import Wave from "../../components/Wave";
+// import { Redirect } from "react-router";
 import { connect } from "react-redux";
 import { fetchAccessTokenActionCreator } from "../../modules/userReducer";
 
@@ -11,7 +12,7 @@ class FindPassPage extends React.Component {
         <div className="center">
           <FindPassForm />
         </div>
-        {!!this.props.accessToken && <Redirect to="/" />}
+        {/* {!this.props.accessToken && <Redirect to="/" />} */}
       </div>
     );
   }

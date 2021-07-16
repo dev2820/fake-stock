@@ -5,7 +5,7 @@ import InputPassword from "../../components/InputPassword";
 import Button from "../../components/CustomButton";
 import CardUI from "../../components/CardUI";
 import Timer from "../../components/Timer";
-import { Link,Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 class FindPassForm extends React.Component {
@@ -17,7 +17,7 @@ class FindPassForm extends React.Component {
       newPassword: "",
       time: 60 * 5,
       timer: null,
-      goHome:false,
+      goHome: false,
       guideText: "등록한 이메일을 입력해주세요.",
     };
     this.gotoConfirmCodeKeyStep = this.gotoConfirmCodeKeyStep.bind(this);
@@ -46,7 +46,7 @@ class FindPassForm extends React.Component {
           <div className="link-box">
             go to{" "}
             <Link className="link" to="/login">
-              signin
+              Log In
             </Link>
           </div>
           <Button onClick={this.gotoConfirmCodeKeyStep}>인증코드 보내기</Button>
@@ -65,7 +65,7 @@ class FindPassForm extends React.Component {
           <div className="link-box">
             go to{" "}
             <Link className="link" to="/login">
-              signin
+              Log In
             </Link>
           </div>
           <Button onClick={this.gotoChangePassStep}>확인</Button>
@@ -83,12 +83,12 @@ class FindPassForm extends React.Component {
           <div className="link-box">
             go to{" "}
             <Link className="link" to="/login">
-              signin
+              Log In
             </Link>
           </div>
           <Button onClick={this.requestChangePassword}>확인</Button>
         </div>
-        {this.state.goHome && <Redirect to="login"/>}
+        {this.state.goHome && <Redirect to="login" />}
       </CardUI>
     );
   }
@@ -102,13 +102,13 @@ class FindPassForm extends React.Component {
       .then((response) => {
         if (response.status === 200) {
           this.getEmailStep.current.classList.add("hidden");
-          setTimeout(()=>{
+          setTimeout(() => {
             this.confirmCodeKeyStep.current.classList.remove("hidden");
             this.setState({
               guideText: "이메일로 전송된 확인 코드를 입력해주세요",
             });
             this.startTimer(60 * 5);
-          },500);
+          }, 500);
         } else {
           this.setState({
             guideText: "이메일을 확인 후 재시도 해주십시오",
@@ -128,17 +128,17 @@ class FindPassForm extends React.Component {
       .then((response) => {
         if (response.status === 200) {
           this.confirmCodeKeyStep.current.classList.add("hidden");
-          setTimeout(()=>{
+          setTimeout(() => {
             this.changePassStep.current.classList.remove("hidden");
             this.setState({
               guideText: "새 비밀번호를 입력해주세요",
             });
-          },500);
+          }, 500);
           clearInterval(this.state.timer);
           this.setState({
             timer: null,
-            time:-1
-          })
+            time: -1,
+          });
         }
       })
       .catch((err) => {
@@ -151,7 +151,7 @@ class FindPassForm extends React.Component {
   requestChangePassword() {
     axios
       .patch("http://localhost:3000/user/updatePassword", {
-        email:this.state.email,
+        email: this.state.email,
         pw: this.state.newPassword,
       })
       .then((response) => {
@@ -171,8 +171,8 @@ class FindPassForm extends React.Component {
   handleTimeOver() {
     clearInterval(this.state.timer);
     this.setState({
-      timer: null
-    })
+      timer: null,
+    });
     alert("시간이 초과되었습니다. 이메일 입력 페이지로 돌아갑니다.");
     this.confirmCodeKeyStep.current.classList.add("hidden");
     this.getEmailStep.current.classList.remove("hidden");
@@ -185,7 +185,7 @@ class FindPassForm extends React.Component {
         this.setState({
           time: second,
         });
-      }, 1000)
+      }, 1000),
     });
   }
 }

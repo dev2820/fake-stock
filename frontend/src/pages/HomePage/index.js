@@ -7,7 +7,7 @@ const Homepage = () => {
   const { accessToken } = useSelector(({ userReducer }) => ({
     accessToken: userReducer.accessToken,
   }));
-  console.log(accessToken)
+  // console.log(isAccessToken);
   return (
     <div>
       <div className="center">
