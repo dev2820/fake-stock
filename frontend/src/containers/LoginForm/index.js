@@ -8,6 +8,7 @@ import { fetchAccessTokenActionCreator } from "../../modules/userReducer";
 import InputEmail from "../../components/InputEmail";
 import InputPassword from "../../components/InputPassword";
 import axios from "axios";
+axios.defaults.withCredentials = true;
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -25,16 +26,20 @@ const LoginForm = () => {
     setPassword(e.target.value);
   }, []);
   const refreshToken = useCallback(() => {
-    axios.post('http://localhost:3000/user/refreshToken').then(response=>{
+    axios.post("http://localhost:3000/user/refreshToken").then((response) => {
       //reducer accessToken 갱신
-      console.log(response.data)
-      dispatch(fetchAccessTokenActionCreator({ accessToken: response.data.access }));
-      axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.access}`;
-      setTimeout(()=>{
+      console.log(response.data);
+      dispatch(
+        fetchAccessTokenActionCreator({ accessToken: response.data.access })
+      );
+      axios.defaults.headers.common["Authorization"] = `Bearer ${
+        response.data.access
+      }`;
+      setTimeout(() => {
         refreshToken();
-      },response.data.date*1000 - 1000*30);
+      }, response.data.date * 1000 - 1000 * 30);
     });
-  },[dispatch]);
+  }, [dispatch]);
   const onClick = useCallback(() => {
     axios
       .post("http://localhost:3000/user/login", {
@@ -42,21 +47,23 @@ const LoginForm = () => {
         pw: password,
       })
       .then((response) => {
-        console.log(1,response);
         if (response.status === 200) {
           // console.log("confirmed");
-          dispatch(fetchAccessTokenActionCreator({ accessToken: response.data.access }));
-          axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.access}`;
-          setTimeout(()=>{
-              refreshToken();
-          },response.data.date*1000 - 1000*30);
+          dispatch(
+            fetchAccessTokenActionCreator({ accessToken: response.data.access })
+          );
+          axios.defaults.headers.common["Authorization"] = `Bearer ${
+            response.data.access
+          }`;
+          setTimeout(() => {
+            refreshToken();
+          }, response.data.date * 1000 - 1000 * 30);
         } else console.log("login error");
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [email, password,refreshToken, dispatch]);
-
+  }, [email, password, refreshToken, dispatch]);
 
   return (
     <CardUI>

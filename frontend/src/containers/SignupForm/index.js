@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import CardUI from "../../components/CardUI";
 import InputEmail from "../../components/InputEmail";
 import InputPassword from "../../components/InputPassword";
+import InputText from "../../components/InputText";
 import Button from "../../components/CustomButton";
 import axios from "axios";
 const emailRegExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
@@ -17,6 +18,7 @@ class SignupForm extends React.Component {
       inputText: "",
       email: "",
       password: "",
+      name: "",
     };
     this.requestSignup = this.requestSignup.bind(this);
   }
@@ -43,6 +45,14 @@ class SignupForm extends React.Component {
               this.setState({ password: e.target.value });
             }}
           />
+          <InputText
+            // className="password-field"
+            placeholder="Name"
+            value={this.state.name}
+            onChange={(e) => {
+              this.setState({ name: e.target.value });
+            }}
+          />
           <div className="links">
             <span>
               go back to{" "}
@@ -60,7 +70,7 @@ class SignupForm extends React.Component {
   }
   requestSignup(event) {
     if (!this.state.email) {
-      alert("이메일을 입력해 주십시오.");
+      alert("이메일을 입력해주십시오.");
       return;
     }
     if (!emailRegExp.test(this.state.email)) {
@@ -68,13 +78,19 @@ class SignupForm extends React.Component {
       return;
     }
     if (!this.state.password) {
-      alert("비밀번호를 입력해 주십시오.");
+      alert("비밀번호를 입력해주십시오.");
+      return;
+    }
+
+    if (!this.state.name) {
+      alert("이름을 입력해주십시오.");
       return;
     }
     axios
       .post("http://localhost:3000/user/createUser", {
         email: this.state.email,
         pw: this.state.password,
+        name: this.state.name,
       })
       .then((response) => {
         if (response.status === 200) {
@@ -93,9 +109,3 @@ export default connect(
     fetchAccessTokenActionCreator,
   }
 )(SignupForm);
-
-// export default connect((state) => ({
-//     test: state.signinReducer
-// }), {
-//     fetchTestActionCreator
-// })(SigninForm);

@@ -1,6 +1,5 @@
 import React from "react";
 import HomepageForm from "../../containers/HomepageForm";
-import Wave from "../../components/Wave";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router";
 
@@ -8,10 +7,9 @@ const Homepage = () => {
   const { accessToken } = useSelector(({ userReducer }) => ({
     accessToken: userReducer.accessToken,
   }));
-  console.log(accessToken)
+  // console.log(isAccessToken);
   return (
     <div>
-      <Wave />
       <div className="center">
         <HomepageForm />
       </div>

@@ -1,5 +1,13 @@
+:root {
+  --primiary-theme-color: #FFEB33;
+  --primiary-text-color: #423630;
+}
+a.link {
+  color:#423630;
+}
 .App {
   text-align: center;
+  background-color:var(--primiary-theme-color);
 }
 
 .App-logo {

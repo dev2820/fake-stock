@@ -1,7 +1,11 @@
 button.custom-button {
-    border: 1px solid #892CDC;
-    background:transparent;
+    --primiary-theme-color: #FFEB33;
+    --primiary-text-color: #423630;
+    --primiary-text-color-hover:#594941;
+    border: 1px solid var(--primiary-text-color);
+    background:var(--primiary-text-color);
     border-radius:8px;
+    color:var(--primiary-theme-color);
     padding:8px;
     font-size:1.05rem;
     cursor:pointer;
@@ -10,8 +14,7 @@ button.custom-button {
         text-decoration: none;
     }
     &:hover {
-        background:#892CDC;
-        color:white;
+        background:var(--primiary-text-color-hover);
         transition:0.3s;
     }
     &:focus {
