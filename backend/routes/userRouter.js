@@ -4,7 +4,7 @@ const router = express.Router();
 const jwt = require('../my_modules/jwt');
 const db = require('../my_modules/DBconn');
 const crypto = require('crypto');
-const mailer = require('./myMailer');
+const mailer = require('../my_modules/myMailer');
 const cookieParser = require('cookie-parser');
 const redis = require('redis');
 const client = redis.createClient();
@@ -13,11 +13,12 @@ router.use(cookieParser(process.env.COOKIE_KEY));
 router.post('/createUser',async (req, res) => {
 	const email = req.body.email;
 	const pw = req.body.pw;
-	if(!(email && pw))
+	const name = req.body.name;
+	if(!(email && pw && name))
 		return res.status(400).send('no input');
 	if(await db.isExist(email))
-		return res.status(400); // email 존재
-	const result = await db.insert(email, pw);
+		return res.status(400).send('email이 존재'); // email 존재
+	const result = await db.insert(email, pw, name);
 	if(result)
 		return res.send('성공');
 	else
@@ -66,6 +67,21 @@ router.patch('/updatePassword',jwt.updatePwMiddleWare , jwt.jwtCheckMiddleWare, 
 		return res.status(400); // email 불일치
 
 	const result = await db.updatePw(req.body.userId, pw);
+	if(result)
+		return res.send('update 성공');
+	else
+		return res.status(401).send('패스워드 갱신 실패');
+});
+
+router.patch('/updateName', jwt.jwtCheckMiddleWare, async (req, res)=>{
+	const name = req.body.name;
+	if(!name)
+		return res.status(400).send('no input');
+		
+	if(!await db.isExist(req.body.userId))
+		return res.status(400); // email 불일치
+
+	const result = await db.updateName(req.body.userId, name);
 	if(result)
 		return res.send('update 성공');
 	else

@@ -14,7 +14,7 @@ const pool = mariadb.createPool({
 
 module.exports.readInfo = async (email) => {
 	try{
-		const [[row]] = await pool.query(`select email, create_at from ${dbTable} WHERE (email = '${email}')`);
+		const [[row]] = await pool.query(`select email, create_at, name from ${dbTable} WHERE (email = '${email}')`);
 		return row;
 	}catch(err){
 		console.log(err);
@@ -37,11 +37,11 @@ module.exports.isRightPw = async (email, pw)=>{
 	}
 }
 
-module.exports.insert = async (email, pw) => {
+module.exports.insert = async (email, pw, name) => {
 	try{
 		const salt = crypto.randomBytes(8).toString('hex');
 		const key = crypto.pbkdf2Sync(pw, salt, 1000, 60, 'sha512').toString('base64');
-		const [result] = await pool.query(`INSERT INTO ${dbTable} (email, password, salt) VALUES ('${email}', '${key}', '${salt}')`);
+		const [result] = await pool.query(`INSERT INTO ${dbTable} (email, password, salt, name) VALUES ('${email}', '${key}', '${salt}', '${name}')`);
 		if(result.affectedRows == 1)
 			return true;
 		else
@@ -80,7 +80,19 @@ module.exports.updatePw = async (email, pw)=>{
 		return false;
 	}
 }
+module.exports.updateName = async (email, name)=>{
+	try{
+		const result = await pool.query(`UPDATE ${dbTable} SET name = '${name}' WHERE (email = '${email}')`);
 
+		if(result[0].changedRows === 1)
+			return true;
+		else 
+			return false;
+	}catch(err){
+		console.log(err);
+		return false;
+	}
+}
 module.exports.isExist = async (email) =>{
 	try{
 		if((await pool.query(`select 1 from ${dbTable} where (email = '${email}')`))[0][0])
