@@ -1,28 +1,22 @@
 import "./loginPage.css";
-import React from "react";
-import LoginForm from "../../containers/LoginForm";
-import { fetchAccessTokenActionCreator } from "../../modules/userReducer";
-import { Redirect } from "react-router";
-import { connect } from "react-redux";
+import React, { useState, useCallback } from "react";
+import { useDispatch,useSelector } from "react-redux";
 
-class LoginPage extends React.Component {
-  render() {
+import LoginForm from "../../containers/LoginForm";
+import { Redirect } from "react-router";
+
+const LoginPage = () => {
+    const { isAccessToken } = useSelector(({ userReducer }) => ({
+      isAccessToken: !!userReducer.accessToken,
+    }));
     return (
       <div>
         <div className="center">
           <LoginForm />
         </div>
-        {this.props.accessToken !== null && <Redirect to="/" />}
+        {isAccessToken && <Redirect to="/" />}
       </div>
     );
-  }
 }
 
-export default connect(
-  ({ userReducer }) => ({
-    accessToken: userReducer.accessToken,
-  }),
-  {
-    fetchAccessTokenActionCreator,
-  }
-)(LoginPage);
+export default LoginPage;

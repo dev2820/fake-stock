@@ -1,13 +1,12 @@
 import React from "react";
-import './homePage.css'
+import "./ChatListPage.css";
 
-import HomepageForm from "../../containers/HomepageForm";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser,faComment } from "@fortawesome/free-solid-svg-icons";
-const Homepage = () => {
+const ChatListPage = () => {
   const { accessToken } = useSelector(({ userReducer }) => ({
     accessToken: userReducer.accessToken,
   }));
@@ -22,12 +21,11 @@ const Homepage = () => {
         </Link>
       </aside>
       <main>
-        <header>head</header>
-        <HomepageForm />
+        <header>채팅</header>
       </main>
       {accessToken === null && <Redirect to="/login" />}
     </div>
   );
 };
 
-export default Homepage;
+export default ChatListPage
