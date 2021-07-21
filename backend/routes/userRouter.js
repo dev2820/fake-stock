@@ -44,7 +44,7 @@ router.post('/login', async (req, res)=>{
 		return res.status(200).json({access,date:60}) // 로그인 성공
 	}
 	else
-		return res.status(401).send('비밀번호 불일치')
+		return res.status(400).send('비밀번호 불일치')
 });
 
 router.get('/getUserInfo', jwt.jwtCheckMiddleWare, async (req, res)=>{
@@ -70,7 +70,7 @@ router.patch('/updatePassword',jwt.updatePwMiddleWare , jwt.jwtCheckMiddleWare, 
 	if(result)
 		return res.send('update 성공');
 	else
-		return res.status(401).send('패스워드 갱신 실패');
+		return res.status(400).send('패스워드 갱신 실패');
 });
 
 router.patch('/updateName', jwt.jwtCheckMiddleWare, async (req, res)=>{
@@ -85,7 +85,7 @@ router.patch('/updateName', jwt.jwtCheckMiddleWare, async (req, res)=>{
 	if(result)
 		return res.send('update 성공');
 	else
-		return res.status(401).send('패스워드 갱신 실패');
+		return res.status(400).send('패스워드 갱신 실패');
 });
 
 router.delete('/deleteUser', jwt.jwtCheckMiddleWare, async (req, res)=>{
@@ -108,7 +108,7 @@ router.delete('/deleteUser', jwt.jwtCheckMiddleWare, async (req, res)=>{
 	if(result)
 		return res.status(200).send('삭제 완료');
 	else
-		return res.status(401).send('삭제 실패');
+		return res.status(400).send('삭제 실패');
 });
 
 router.post('/refreshToken', jwt.jwtCheckMiddleWare, (req, res)=>{

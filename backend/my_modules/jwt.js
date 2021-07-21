@@ -48,7 +48,7 @@ module.exports.jwtCheckMiddleWare = (req, res, next)=>{
 			next()
 		}
 		else
-			res.status(401).send('로그인 필요');
+			res.status(400).send('로그인 필요');
 	}
 	catch(err){
 		console.log(err)
