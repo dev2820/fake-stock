@@ -11,7 +11,7 @@ checkRefresh = (token)=>{
 		return undefined;
 	}
 }
-checkAccess = (token)=>{
+module.exports.checkAccess = (token)=>{
 	try{
 		return jwt.verify(token, suuuuperSecret, {expiresIn: accessTokenExpireTime }, (err, decoded)=>{
 			return decoded.id;
@@ -45,10 +45,11 @@ module.exports.refreshTokenMiddle = (req, res, next)=>{
 	next();
 }
 module.exports.jwtCheckMiddleWare = (req, res, next)=>{
+	console.log(req.body)
 	try{
 		if(req.headers.authorization){
-			const access = checkAccess(req.headers.authorization.split('Bearer ')[1]);
-			//const access = checkAccess(req.headers.authorization);
+			//const access = checkAccess(req.headers.authorization.split('Bearer ')[1]);
+			const access = this.checkAccess(req.headers.authorization);
 			if(!access || !req.signedCookies.refresh)
 				res.status(401).send('토큰 만료');
 			else{
