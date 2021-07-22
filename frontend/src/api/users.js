@@ -73,23 +73,30 @@ export const requestLogout = async () => {
     }
 }
 
-export const requestUserInfo = async (email) => {
-    const res = await axios.get("http://localhost:3000/user/getUserInfo");
+export const requestUserInfo = async (payload) => {
+    const res = await axios.get("http://localhost:3000/user/getUserInfo",{
+        params:{
+            email:payload.email
+        }
+    });
     if(res.status === 200) {
         return res.data
     }
     else {
-        throw 'failed';
+        throw new Error('request failed');
     }
 }
-export const requestFriendsInfo = async (email) => {
-    const res = await axios.get("http://localhost:3000/user/getFriendsInfo");
+export const requestFriendsInfo = async (payload) => {
+    const res = await axios.get("http://localhost:3000/user/getFriendsInfo",{
+        params:{
+            email:payload.email
+        }
+    });
     if(res.status === 200) {
         return res.data;
     }
     else {
-        console.log(res)
-        throw 'failed';
+        throw new Error('request failed');
     }
     
 }

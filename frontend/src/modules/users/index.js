@@ -21,9 +21,9 @@ export const fetchFriendsInfoActionCreator = createAction(FETCH_FRIENDS_INFO);
 export const fetchAccessToken = createAction(FETCH_ACCESSTOKEN);
 
 //thunks
-export const requestLogin = (email,password) => async (dispatch) => {
+export const requestLogin = (payload) => async (dispatch) => {
   try {
-    const token = await userAPI.requestLogin(email,password);
+    const token = await userAPI.requestLogin(payload);
     dispatch({ type: FETCH_ACCESSTOKEN, payload: { token } });
   }
   catch (err){
@@ -31,9 +31,9 @@ export const requestLogin = (email,password) => async (dispatch) => {
   }
 }
 
-export const requestSignup = (email,password,name) => async (dispatch) => {
+export const requestSignup = (payload) => async (dispatch) => {
   try {
-    const token = await userAPI.requestSignup(email,password,name);
+    const token = await userAPI.requestSignup(payload);
     dispatch({ type: FETCH_ACCESSTOKEN, payload: { token } });
   }
   catch (err){
@@ -41,9 +41,9 @@ export const requestSignup = (email,password,name) => async (dispatch) => {
   }
 }
 
-export const requestRefreshToken = (email,password) => async (dispatch) => {
+export const requestRefreshToken = (payload) => async (dispatch) => {
   try {
-    const token = await userAPI.requestRefreshToken(email,password);
+    const token = await userAPI.requestRefreshToken(payload);
     dispatch({ type: FETCH_ACCESSTOKEN, payload: { token } });
   }
   catch (err){
@@ -56,9 +56,9 @@ export const requestLogout = () => async (dispatch) => {
     dispatch({ type: FETCH_ACCESSTOKEN, payload: { token:null } });
 }
 
-export const requestUserInfo = () => async (dispatch) => {
+export const requestUserInfo = (payload) => async (dispatch) => {
   try {
-    const userInfo = await userAPI.requestUserInfo();
+    const userInfo = await userAPI.requestUserInfo(payload);
     dispatch({ type: FETCH_USERINFO, payload: { userInfo:userInfo } });
   }
   catch(err) {
@@ -66,9 +66,9 @@ export const requestUserInfo = () => async (dispatch) => {
   }
 }
 
-export const requestFriendsInfo = () => async (dispatch) => {
+export const requestFriendsInfo = (payload) => async (dispatch) => {
   try {
-    const infoList = await userAPI.requestFriendsInfo();
+    const infoList = await userAPI.requestFriendsInfo(payload);
     dispatch({ type: FETCH_FRIENDS_INFO, payload: { infoList:[] } });
   }
   catch(err) {
