@@ -10,7 +10,7 @@ const redis = require('redis');
 const client = redis.createClient();
 router.use(cookieParser(process.env.COOKIE_KEY));
 
-router.post('/createUser',async (req, res) => {
+router.post('/createUser',jwt.isLoginedMiddle, async (req, res) => {
 	const email = req.body.email;
 	const pw = req.body.pw;
 	const name = req.body.name;
@@ -33,7 +33,7 @@ router.post('/createUser',async (req, res) => {
 		return res.send('실패');
 });
 
-router.post('/login', async (req, res)=>{
+router.post('/login',jwt.isLoginedMiddle, async (req, res)=>{
 	const email = req.body.email;
 	const pw = req.body.pw;
 	if(!(email && pw))
@@ -53,7 +53,7 @@ router.post('/login', async (req, res)=>{
 		return res.status(401).send('비밀번호 불일치')
 });
 
-router.get('/logout', async (req, res)=>{
+router.get('/logout',jwt.jwtCheckMiddleWare, async (req, res)=>{
 	res.clearCookie('refresh', {
 		httpOnly: true,
 		signed: true,
@@ -63,7 +63,7 @@ router.get('/logout', async (req, res)=>{
 })
 
 router.get('/getUserInfo', jwt.jwtCheckMiddleWare, async (req, res)=>{
-	const data = await db.readInfo(req.body.userId);
+	const data = await db.readInfo(req.body.userId, req.body.friendlist);
 	if(data)
 		res.status(200).send(data);
 	else
@@ -74,6 +74,13 @@ router.patch('/updatePassword',jwt.jwtCheckMiddleWare, async (req, res)=>{
 	const pw = req.body.pw;
 	if(!pw)
 		return res.status(400).send('no input');
+	if(req.signedCookies.findpass)
+		res.clearCookie('findpass', {
+			httpOnly: true,
+			signed: true,
+			path: '/'
+		});
+
 
 	const result = await db.updatePw(req.body.userId, pw);
 	if(result)
@@ -84,13 +91,24 @@ router.patch('/updatePassword',jwt.jwtCheckMiddleWare, async (req, res)=>{
 
 router.patch('/updateInfo', jwt.jwtCheckMiddleWare, async (req, res)=>{
 	const data = [req.body.name, req.body.friend, req.body.message];
-	const result = await db.updateName(req.body.userId, data);
+	const result = await db.updateInfo(req.body.userId, data);
 	if(result)
 		return res.send('update 성공');
 	else
 		return res.status(401).send('갱신 실패');
 });
 
+router.patch('/updateFriend', jwt.jwtCheckMiddleWare, async (req, res)=>{
+	if(req.body.friend){
+		const result = db.updateFriend(req.body.userId, req.body.friend);
+		if(result)
+			return res.status(200).send('성공');
+		else
+			return res.status(400).send('update 실패')
+	}
+	else
+		return res.status(400).send('update 실패')
+})
 router.delete('/deleteUser', jwt.jwtCheckMiddleWare, async (req, res)=>{
 	res.clearCookie('refresh', {
 		httpOnly: true,
@@ -112,7 +130,18 @@ router.post('/refreshToken', (req, res)=>{
 		res.status(200).json({access})
 	}
 	else{
-		res.status(401).send('로그인 필요')
+		const access = jwt.createAccessJwt(email);
+		const refresh = jwt.createRefreshJwt(email);
+		res.clearCookie('refresh', {
+			httpOnly: true,
+			signed: true,
+			path: '/'
+		});
+		res.cookie('refresh', refresh, {
+			httpOnly: true,
+			signed: true,
+		})
+		return res.status(200).json({access}) // 로그인 성공
 	}
 })
 
