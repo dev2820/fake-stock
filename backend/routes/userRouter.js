@@ -90,7 +90,7 @@ router.patch('/updatePassword',jwt.jwtCheckMiddleWare, async (req, res)=>{
 });
 
 router.patch('/updateInfo', jwt.jwtCheckMiddleWare, async (req, res)=>{
-	const data = [req.body.name, req.body.friend, req.body.message];
+	const data = [req.body.name, req.body.message];
 	const result = await db.updateInfo(req.body.userId, data);
 	if(result)
 		return res.send('update 성공');
