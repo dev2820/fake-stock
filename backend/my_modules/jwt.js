@@ -36,23 +36,34 @@ module.exports.createAccessJwt = (email)=>{
 module.exports.jwtCheckMiddleWare = (req, res, next)=>{
 	try{
 		//console.log(req.headers.authorization)
-		if(req.headers.authorization){
+		if(req.headers.authorization){//access토큰 존재
 			const access = checkAccess(req.headers.authorization.split('Bearer ')[1]);
-			//refresh token을 이용해 토큰 재발급
-			req.body.userId = access;
-			next();
+			if(!!access) {
+				//access토큰이 유효함
+				req.body.userId = access;
+				next();
+			}
+			else {
+				//access토큰이 유효하지 않음
+				res.status(401).send('access토큰 재발급 필요');
+			}
 		}
 		else if(req.signedCookies.refresh){
 			const refresh = checkRefresh(req.signedCookies.refresh);
-			req.body.userId = refresh;
-			next()
+			if(!!refresh) {
+				res.status(401).send('access토큰 재발급 필요');
+			}
+			else {
+				throw new Error('refresh 토큰이 유효하지 않음')
+			}
 		}
-		else
-			res.status(400).send('로그인 필요');
+		else {
+			throw new Error('refresh 토큰이 유효하지 않음')
+		}
 	}
 	catch(err){
 		console.log(err)
-		res.status(401).send('jwt 토큰 모듈 오류')
+		res.status(400).send('jwt 토큰 모듈 오류')
 	}
 }
 

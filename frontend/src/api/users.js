@@ -22,8 +22,11 @@ export const requestLogin = async (payload) =>{
         axios.defaults.headers.common["Authorization"] = `Bearer ${
             res.data.access
         }`;
+        return res.data.access;
     }
-    return res.data.access;
+    else {
+        return null;
+    }
 }
 
 export const requestSignup = async (payload) => {
@@ -36,8 +39,11 @@ export const requestSignup = async (payload) => {
         axios.defaults.headers.common["Authorization"] = `Bearer ${
             res.data.access
         }`;
+        return res.data.access;
     }
-    return res.data.access;
+    else {
+        return null;
+    }
 }
 export const requestRefreshToken = async () => {
     const res = await axios.post("http://localhost:3000/user/refreshToken");
@@ -46,8 +52,11 @@ export const requestRefreshToken = async () => {
         axios.defaults.headers.common["Authorization"] = `Bearer ${
             res.data.access
         }`;
+        return res.data.access;
     }
-    return res.data.access;
+    else {
+        return null;
+    }
     //   setTimeout(() => {
     //     refreshToken();
     //   }, res.data.date * 1000 - 1000 * 30);

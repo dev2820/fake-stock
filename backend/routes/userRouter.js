@@ -111,9 +111,21 @@ router.delete('/deleteUser', jwt.jwtCheckMiddleWare, async (req, res)=>{
 		return res.status(400).send('삭제 실패');
 });
 
-router.post('/refreshToken', jwt.jwtCheckMiddleWare, (req, res)=>{
-	const access = jwt.createAccessJwt(req.body.userId);
-	res.status(200).json({access,date:60})
+router.post('/refreshToken', (req, res)=>{
+	if(req.signedCookies.refresh) {//refresh토큰이 존재
+		const refresh = checkRefresh(req.signedCookies.refresh);
+		if(!!refresh) {//refresh토큰이 유효함
+			const access = jwt.createAccessJwt(refresh);
+			res.status(200).json({access})
+		}
+		else { // refresh토큰이 유효하지 않음 => 로그인이 필요함
+			res.status(400).send('로그인 필요');
+		}
+		
+	}
+	else {//로그인이 필요한 상황
+		res.status(400).send('로그인 필요');
+	}
 })
 
 router.get('/sendConfirmCode', async (req, res)=>{
