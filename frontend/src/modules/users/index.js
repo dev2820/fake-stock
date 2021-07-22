@@ -51,15 +51,31 @@ export const requestRefreshToken = (email,password) => async (dispatch) => {
   }
 }
 
-// export const requestFriendsInfo = (email) => async (dispatch) => {
-//   try {
-//     const token = await userAPI.requestFriendsInfo(email,password);
-//     dispatch({ type: FETCH_FRIENDS_INFO, payload: { token } });
-//   }
-//   catch (err){
-//     dispatch({ type: FETCH_FRIENDS_INFO, payload: { token:null } });
-//   }
-// }
+export const requestLogout = () => async (dispatch) => {
+    const token = await userAPI.requestLogout();
+    dispatch({ type: FETCH_ACCESSTOKEN, payload: { token:null } });
+}
+
+export const requestUserInfo = () => async (dispatch) => {
+  try {
+    const userInfo = await userAPI.requestUserInfo();
+    dispatch({ type: FETCH_USERINFO, payload: { userInfo:userInfo } });
+  }
+  catch(err) {
+    dispatch({ type: FETCH_USERINFO, payload: { userInfo:null } });
+  }
+}
+
+export const requestFriendsInfo = () => async (dispatch) => {
+  try {
+    const infoList = await userAPI.requestFriendsInfo();
+    dispatch({ type: FETCH_FRIENDS_INFO, payload: { infoList:[] } });
+  }
+  catch(err) {
+    dispatch({ type: FETCH_FRIENDS_INFO, payload: { infoList:[] } });
+  }
+}
+
 export default handleActions(
   {
     [FETCH_EMAIL]: (state, action) => ({
@@ -68,12 +84,11 @@ export default handleActions(
     }),
     [FETCH_USERINFO]: (state, action) => ({
       ...state,
-      userInfo: action.payload
+      userInfo: action.payload.userInfo
     }),
     [FETCH_FRIENDS_INFO]: (state, action) => ({
-      //친구 정보를 불러와 friendsInfo를 갱신한다.
       ...state,
-      friendsInfo: action.payload
+      friendsInfo: action.payload.infoList
     }),
     [FETCH_ACCESSTOKEN]: (state,action) => ({
         ...state,

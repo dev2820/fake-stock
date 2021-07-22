@@ -1,9 +1,11 @@
 import './SimpleFriendProfile.css'
 
-const SimpleFriendProfile = () => {
+const SimpleFriendProfile = ({profile}) => {
     return (
         <div>
-            친구사진,친구사진,친구 상태메세지
+            <img className="name" src={profile && profile.img}/>
+            <span className="status-message">{profile && profile.statusMessage}</span>
+            <span className="name">{profile && profile.name}</span>
         </div>
     )
 }

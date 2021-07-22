@@ -61,3 +61,37 @@ export const requestRefreshToken = async () => {
     //     refreshToken();
     //   }, res.data.date * 1000 - 1000 * 30);
 }
+
+export const requestLogout = async () => {
+    const res = await axios.get("http://localhost:3000/user/logout");
+    if(res.status === 200) {
+        axios.defaults.headers.common["Authorization"] = '';
+        return null;
+    }
+    else {//로그아웃을 실패하면 뭘해야할까
+        return null;
+    }
+}
+
+export const requestUserInfo = async (email) => {
+    const res = await axios.get("http://localhost:3000/user/getUserInfo");
+    if(res.status === 200) {
+        return res.data
+    }
+    else {
+        throw 'failed';
+    }
+}
+export const requestFriendsInfo = async (email) => {
+    const res = await axios.get("http://localhost:3000/user/getFriendsInfo");
+    if(res.status === 200) {
+        return res.data;
+    }
+    else {
+        console.log(res)
+        throw 'failed';
+    }
+    
+}
+
+

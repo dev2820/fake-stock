@@ -1,9 +1,11 @@
 import './SimpleMyProfile.css'
 
-const SimpleMyProfile = () => {
+const SimpleMyProfile = ({profile}) => {
     return (
         <div>
-            내사진,내이름,내 상태메세지
+            <img className="name" src={profile && profile.img}/>
+            <span className="status-message">{profile && profile.statusMessage}</span>
+            <span className="name">{profile && profile.name}</span>
         </div>
     )
 }
