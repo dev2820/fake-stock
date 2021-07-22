@@ -30,8 +30,7 @@ module.exports.createAccessJwt = (email)=>{
 }
 
 module.exports.isLoginedMiddle = (req, res, next) => {
-	if(req.signedCookies.refresh ||
-		checkAccess(req.headers.authorization.split('Bearer ')[1]))
+	if(req.signedCookies.refresh && req.headers.authorization)
 		res.status(400).send('로그아웃 필요');
 	else
 		next();
