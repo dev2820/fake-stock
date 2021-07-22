@@ -1,10 +1,8 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const suuuuperSecret = process.env.SECRET_KEY;
-const accessTokenExpireTime = '1m';
+const accessTokenExpireTime = "1h";
 checkRefresh = (token)=>{
-	if(token == null)
-		return null;
 	try{
 		return jwt.verify(token, suuuuperSecret, (err, decoded)=>{
 			return decoded.id;
@@ -14,8 +12,6 @@ checkRefresh = (token)=>{
 	}
 }
 checkAccess = (token)=>{
-	if(token == null)
-		return null;
 	try{
 		return jwt.verify(token, suuuuperSecret, {expiresIn: accessTokenExpireTime }, (err, decoded)=>{
 			return decoded.id;
@@ -35,16 +31,20 @@ module.exports.createAccessJwt = (email)=>{
 
 module.exports.jwtCheckMiddleWare = (req, res, next)=>{
 	try{
-		//console.log(req.headers.authorization)
 		if(req.headers.authorization){
 			const access = checkAccess(req.headers.authorization.split('Bearer ')[1]);
-			//refresh token을 이용해 토큰 재발급
-			req.body.userId = access;
-			next();
+			if(!access)
+				res.status(401).send('토큰 만료');
+			else{
+				req.body.userId = access;
+				next();
+			}
 		}
-		else if(req.signedCookies.refresh){
-			const refresh = checkRefresh(req.signedCookies.refresh);
-			req.body.userId = refresh;
+		else if(req.signedCookies.findpass){
+			jwt.verify(req.signedCookies.findpass, suuuuperSecret, (err, decoded)=>{
+				req.body.userId = decoded.id;
+				next();
+			})
 			next()
 		}
 		else
@@ -56,19 +56,3 @@ module.exports.jwtCheckMiddleWare = (req, res, next)=>{
 	}
 }
 
-module.exports.updatePwMiddleWare = (req, res, next)=>{
-	console.log(req.signedCookies)
-	if(!req.signedCookies.findpass)
-		next();
-<<<<<<< HEAD
-	else{
-=======
-	else {
-		console.log(1,req.signedCookies.findpass)
->>>>>>> e0388b5c81ce19644f83eaa3a37069143ed2cca9
-		jwt.verify(req.signedCookies.findpass, suuuuperSecret, (err, decoded)=>{
-			req.signedCookies.refresh = this.createRefreshJwt(decoded.id);
-			next();
-		})
-	}
-}

@@ -19,8 +19,16 @@ router.post('/createUser',async (req, res) => {
 	if(await db.isExist(email))
 		return res.status(400).send('email이 존재'); // email 존재
 	const result = await db.insert(email, pw, name);
-	if(result)
-		return res.send('성공');
+	
+	if(result){
+		const access = jwt.createAccessJwt(email);
+		const refresh = jwt.createRefreshJwt(email);
+		res.cookie('refresh', refresh, {
+			httpOnly: true,
+			signed: true,
+		})
+		return res.json({access,date:60});
+	}
 	else
 		return res.send('실패');
 });
@@ -48,9 +56,6 @@ router.post('/login', async (req, res)=>{
 });
 
 router.get('/getUserInfo', jwt.jwtCheckMiddleWare, async (req, res)=>{
-	if(!await db.isExist(req.body.userId))
-		return res.status(400); // email 불일치
-
 	const data = await db.readInfo(req.body.userId);
 	if(data)
 		res.status(200).send(data);
@@ -58,7 +63,7 @@ router.get('/getUserInfo', jwt.jwtCheckMiddleWare, async (req, res)=>{
 		res.status(400).send('정보없음')
 });
 
-router.patch('/updatePassword',jwt.updatePwMiddleWare , jwt.jwtCheckMiddleWare, async (req, res)=>{
+router.patch('/updatePassword',jwt.jwtCheckMiddleWare, async (req, res)=>{
 	const pw = req.body.pw;
 	if(!pw)
 		return res.status(400).send('no input');
@@ -73,19 +78,13 @@ router.patch('/updatePassword',jwt.updatePwMiddleWare , jwt.jwtCheckMiddleWare, 
 		return res.status(401).send('패스워드 갱신 실패');
 });
 
-router.patch('/updateName', jwt.jwtCheckMiddleWare, async (req, res)=>{
-	const name = req.body.name;
-	if(!name)
-		return res.status(400).send('no input');
-		
-	if(!await db.isExist(req.body.userId))
-		return res.status(400); // email 불일치
-
-	const result = await db.updateName(req.body.userId, name);
+router.patch('/updateInfo', jwt.jwtCheckMiddleWare, async (req, res)=>{
+	const data = [req.body.name, req.body.friend, req.body.message];
+	const result = await db.updateName(req.body.userId, data);
 	if(result)
 		return res.send('update 성공');
 	else
-		return res.status(401).send('패스워드 갱신 실패');
+		return res.status(401).send('갱신 실패');
 });
 
 router.delete('/deleteUser', jwt.jwtCheckMiddleWare, async (req, res)=>{
@@ -171,7 +170,4 @@ router.post('/checkConfirmCode', (req, res)=>{
 	}
 });
 
-router.get('/testJWT', jwt.jwtCheckMiddleWare, (req,res)=> {
-	res.status(200).json({message:'success'});
-})
 module.exports = router;

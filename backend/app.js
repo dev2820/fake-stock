@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors');
+const multer = require('multer');
 
 require('dotenv').config();
 var indexRouter = require('./routes/sendHtml');

@@ -4,6 +4,7 @@ const jwt = require('./jwt');
 require('dotenv').config();
 
 const dbTable = process.env.DB_TABLE;
+const dataSet = ['name', 'friendlist', 'message'];
 const pool = mariadb.createPool({
     host: 'localhost',
 	user: process.env.USER_NAME,
@@ -12,9 +13,9 @@ const pool = mariadb.createPool({
 	connectionLimit: 10
 }).promise();
 
-module.exports.readInfo = async (email) => {
+module.exports.readInfo = async (email, option) => {
 	try{
-		const [[row]] = await pool.query(`select email, create_at, name from ${dbTable} WHERE (email = '${email}')`);
+		const [[row]] = await pool.query(`select message, name from ${dbTable} WHERE (email = '${email}')`);
 		return row;
 	}catch(err){
 		console.log(err);
@@ -51,7 +52,7 @@ module.exports.insert = async (email, pw, name) => {
 		return false;
 	}
 };
-	
+
 module.exports.delete = async (email) =>{
 	try{
 		const [result] = await pool.query(`DELETE FROM ${dbTable} WHERE (email = '${email}')`);
@@ -80,14 +81,20 @@ module.exports.updatePw = async (email, pw)=>{
 		return false;
 	}
 }
-module.exports.updateName = async (email, name)=>{
+module.exports.updateInfo = async (email, data)=>{
 	try{
-		const result = await pool.query(`UPDATE ${dbTable} SET name = '${name}' WHERE (email = '${email}')`);
-
-		if(result[0].changedRows === 1)
-			return true;
-		else 
-			return false;
+		const result = true;
+		if(data[1]){
+			let list = JSON.parse(await pool.query(`select friendlist name from ${dbTable} WHERE (email = '${email}')`));
+			list.friends.push(data[1]);
+			data[1] = JSON.stringify(list);
+		}
+		for(let i=0 ; i<3; i++){
+			if(data[i])
+				if(!await pool.query(`UPDATE ${dbTable} SET ${dataSet[i]} = '${data[i]}' WHERE (email = '${email}')`))
+					result = false;
+		}
+		return result;
 	}catch(err){
 		console.log(err);
 		return false;
