@@ -10,7 +10,7 @@ const redis = require('redis');
 const client = redis.createClient();
 router.use(cookieParser(process.env.COOKIE_KEY));
 
-router.post('/createUser',async (req, res) => {
+router.post('/createUser',jwt.isLoginedMiddle, async (req, res) => {
 	const email = req.body.email;
 	const pw = req.body.pw;
 	const name = req.body.name;
@@ -19,19 +19,25 @@ router.post('/createUser',async (req, res) => {
 	if(await db.isExist(email))
 		return res.status(400).send('email이 존재'); // email 존재
 	const result = await db.insert(email, pw, name);
-	if(result)
-		return res.send('성공');
+	
+	if(result){
+		const access = jwt.createAccessJwt(email);
+		const refresh = jwt.createRefreshJwt(email);
+		res.cookie('refresh', refresh, {
+			httpOnly: true,
+			signed: true,
+		})
+		return res.json({access,date:60});
+	}
 	else
 		return res.send('실패');
 });
 
-router.post('/login', async (req, res)=>{
+router.post('/login',jwt.isLoginedMiddle, async (req, res)=>{
 	const email = req.body.email;
 	const pw = req.body.pw;
 	if(!(email && pw))
 		return res.status(400).send('no input');
-	if(!await db.isExist(email))
-		return res.status(400).send('불일치'); // email 불일치
 
 	const row = await db.isRightPw(email, pw); 
 	if(row){
@@ -41,30 +47,40 @@ router.post('/login', async (req, res)=>{
 			httpOnly: true,
 			signed: true,
 		})
-		return res.status(200).json({access,date:60}) // 로그인 성공
+		return res.status(200).json({access}) // 로그인 성공
 	}
 	else
 		return res.status(400).send('비밀번호 불일치')
 });
 
-router.get('/getUserInfo', jwt.jwtCheckMiddleWare, async (req, res)=>{
-	if(!await db.isExist(req.body.userId))
-		return res.status(400); // email 불일치
+router.get('/logout',jwt.jwtCheckMiddleWare, async (req, res)=>{
+	res.clearCookie('refresh', {
+		httpOnly: true,
+		signed: true,
+		path: '/'
+	});
+	res.status(200).send('로그아웃 완료');
+})
 
-	const data = await db.readInfo(req.body.userId);
+router.get('/getUserInfo', jwt.jwtCheckMiddleWare, async (req, res)=>{
+	const data = await db.readInfo(req.body.userId, req.body.friendlist);
 	if(data)
 		res.status(200).send(data);
 	else
 		res.status(400).send('정보없음')
 });
 
-router.patch('/updatePassword',jwt.updatePwMiddleWare , jwt.jwtCheckMiddleWare, async (req, res)=>{
+router.patch('/updatePassword',jwt.jwtCheckMiddleWare, async (req, res)=>{
 	const pw = req.body.pw;
 	if(!pw)
 		return res.status(400).send('no input');
-		
-	if(!await db.isExist(req.body.userId))
-		return res.status(400); // email 불일치
+	if(req.signedCookies.findpass)
+		res.clearCookie('findpass', {
+			httpOnly: true,
+			signed: true,
+			path: '/'
+		});
+
 
 	const result = await db.updatePw(req.body.userId, pw);
 	if(result)
@@ -73,35 +89,32 @@ router.patch('/updatePassword',jwt.updatePwMiddleWare , jwt.jwtCheckMiddleWare, 
 		return res.status(400).send('패스워드 갱신 실패');
 });
 
-router.patch('/updateName', jwt.jwtCheckMiddleWare, async (req, res)=>{
-	const name = req.body.name;
-	if(!name)
-		return res.status(400).send('no input');
-		
-	if(!await db.isExist(req.body.userId))
-		return res.status(400); // email 불일치
-
-	const result = await db.updateName(req.body.userId, name);
+router.patch('/updateInfo', jwt.jwtCheckMiddleWare, async (req, res)=>{
+	const data = [req.body.name, req.body.friend, req.body.message];
+	const result = await db.updateInfo(req.body.userId, data);
 	if(result)
 		return res.send('update 성공');
 	else
-		return res.status(400).send('패스워드 갱신 실패');
+		return res.status(401).send('갱신 실패');
 });
 
+router.patch('/updateFriend', jwt.jwtCheckMiddleWare, async (req, res)=>{
+	if(req.body.friend){
+		const result = db.updateFriend(req.body.userId, req.body.friend);
+		if(result)
+			return res.status(200).send('성공');
+		else
+			return res.status(400).send('update 실패')
+	}
+	else
+		return res.status(400).send('update 실패')
+})
 router.delete('/deleteUser', jwt.jwtCheckMiddleWare, async (req, res)=>{
 	res.clearCookie('refresh', {
 		httpOnly: true,
 		signed: true,
 		path: '/'
 	});
-	res.clearCookie('refresh', {
-		httpOnly: true,
-		signed: true,
-		path: '/'
-	});
-
-	if(!await db.isExist(req.body.userId))
-		return res.status(400); // email 불일치
 
 	const result = await db.delete(req.body.userId);
 		
@@ -112,19 +125,23 @@ router.delete('/deleteUser', jwt.jwtCheckMiddleWare, async (req, res)=>{
 });
 
 router.post('/refreshToken', (req, res)=>{
-	if(req.signedCookies.refresh) {//refresh토큰이 존재
-		const refresh = checkRefresh(req.signedCookies.refresh);
-		if(!!refresh) {//refresh토큰이 유효함
-			const access = jwt.createAccessJwt(refresh);
-			res.status(200).json({access})
-		}
-		else { // refresh토큰이 유효하지 않음 => 로그인이 필요함
-			res.status(400).send('로그인 필요');
-		}
-		
+	if(req.signedCookies.refresh){
+		const access = jwt.createAccessJwt(req.body.userId);
+		res.status(200).json({access})
 	}
-	else {//로그인이 필요한 상황
-		res.status(400).send('로그인 필요');
+	else{
+		const access = jwt.createAccessJwt(email);
+		const refresh = jwt.createRefreshJwt(email);
+		res.clearCookie('refresh', {
+			httpOnly: true,
+			signed: true,
+			path: '/'
+		});
+		res.cookie('refresh', refresh, {
+			httpOnly: true,
+			signed: true,
+		})
+		return res.status(200).json({access}) // 로그인 성공
 	}
 })
 
@@ -183,7 +200,4 @@ router.post('/checkConfirmCode', (req, res)=>{
 	}
 });
 
-router.get('/testJWT', jwt.jwtCheckMiddleWare, (req,res)=> {
-	res.status(200).json({message:'success'});
-})
 module.exports = router;
