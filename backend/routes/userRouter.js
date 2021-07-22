@@ -50,7 +50,7 @@ router.post('/login',jwt.isLoginedMiddle, async (req, res)=>{
 		return res.status(200).json({access}) // 로그인 성공
 	}
 	else
-		return res.status(401).send('비밀번호 불일치')
+		return res.status(400).send('비밀번호 불일치')
 });
 
 router.get('/logout',jwt.jwtCheckMiddleWare, async (req, res)=>{
@@ -86,7 +86,7 @@ router.patch('/updatePassword',jwt.jwtCheckMiddleWare, async (req, res)=>{
 	if(result)
 		return res.send('update 성공');
 	else
-		return res.status(401).send('패스워드 갱신 실패');
+		return res.status(400).send('패스워드 갱신 실패');
 });
 
 router.patch('/updateInfo', jwt.jwtCheckMiddleWare, async (req, res)=>{
@@ -95,7 +95,11 @@ router.patch('/updateInfo', jwt.jwtCheckMiddleWare, async (req, res)=>{
 	if(result)
 		return res.send('update 성공');
 	else
+<<<<<<< HEAD
 		return res.status(401).send('갱신 실패');
+=======
+		return res.status(400).send('패스워드 갱신 실패');
+>>>>>>> 0f85bffdf2a84962c07db736c43e99840a2e2d36
 });
 
 router.patch('/updateFriend', jwt.jwtCheckMiddleWare, async (req, res)=>{
@@ -125,6 +129,7 @@ router.delete('/deleteUser', jwt.jwtCheckMiddleWare, async (req, res)=>{
 });
 
 router.post('/refreshToken', (req, res)=>{
+<<<<<<< HEAD
 	if(req.signedCookies.refresh){
 		const access = jwt.createAccessJwt(req.body.userId);
 		res.status(200).json({access})
@@ -142,6 +147,21 @@ router.post('/refreshToken', (req, res)=>{
 			signed: true,
 		})
 		return res.status(200).json({access}) // 로그인 성공
+=======
+	if(req.signedCookies.refresh) {//refresh토큰이 존재
+		const refresh = checkRefresh(req.signedCookies.refresh);
+		if(!!refresh) {//refresh토큰이 유효함
+			const access = jwt.createAccessJwt(refresh);
+			res.status(200).json({access})
+		}
+		else { // refresh토큰이 유효하지 않음 => 로그인이 필요함
+			res.status(400).send('로그인 필요');
+		}
+		
+	}
+	else {//로그인이 필요한 상황
+		res.status(400).send('로그인 필요');
+>>>>>>> 0f85bffdf2a84962c07db736c43e99840a2e2d36
 	}
 })
 

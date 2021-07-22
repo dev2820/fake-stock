@@ -1,5 +1,5 @@
 import React from "react";
-import "./FindPassForm.scss";
+import "./FindPassForm.scoped.scss";
 import InputEmail from "../../components/InputEmail";
 import InputPassword from "../../components/InputPassword";
 import Button from "../../components/CustomButton";

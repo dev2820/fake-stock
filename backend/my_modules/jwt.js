@@ -38,6 +38,7 @@ module.exports.isLoginedMiddle = (req, res, next) => {
 }
 module.exports.jwtCheckMiddleWare = (req, res, next)=>{
 	try{
+<<<<<<< HEAD
 		if(req.headers.authorization){
 			const access = checkAccess(req.headers.authorization.split('Bearer ')[1]);
 			//const access = checkAccess(req.headers.authorization);
@@ -54,13 +55,51 @@ module.exports.jwtCheckMiddleWare = (req, res, next)=>{
 				next();
 			})
 			next()
+=======
+		//console.log(req.headers.authorization)
+		if(req.headers.authorization){//access토큰 존재
+			const access = checkAccess(req.headers.authorization.split('Bearer ')[1]);
+			if(!!access) {
+				//access토큰이 유효함
+				req.body.userId = access;
+				next();
+			}
+			else {
+				//access토큰이 유효하지 않음
+				res.status(401).send('access토큰 재발급 필요');
+			}
 		}
-		else
-			res.status(401).send('로그인 필요');
+		else if(req.signedCookies.refresh){
+			const refresh = checkRefresh(req.signedCookies.refresh);
+			if(!!refresh) {
+				res.status(401).send('access토큰 재발급 필요');
+			}
+			else {
+				throw new Error('refresh 토큰이 유효하지 않음')
+			}
+		}
+		else {
+			throw new Error('refresh 토큰이 유효하지 않음')
+>>>>>>> 0f85bffdf2a84962c07db736c43e99840a2e2d36
+		}
 	}
 	catch(err){
 		console.log(err)
-		res.status(401).send('jwt 토큰 모듈 오류')
+		res.status(400).send('jwt 토큰 모듈 오류')
 	}
 }
 
+<<<<<<< HEAD
+=======
+module.exports.updatePwMiddleWare = (req, res, next)=>{
+	console.log(req.signedCookies)
+	if(!req.signedCookies.findpass)
+		next();
+	else{
+		jwt.verify(req.signedCookies.findpass, suuuuperSecret, (err, decoded)=>{
+			req.signedCookies.refresh = this.createRefreshJwt(decoded.id);
+			next();
+		})
+	}
+}
+>>>>>>> 0f85bffdf2a84962c07db736c43e99840a2e2d36

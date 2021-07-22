@@ -1,3 +1,7 @@
+.form {
+    background-color: var(--primiary-theme-color);
+    height:100%;
+}
 h2.title {
     font-size:3.5rem;
     text-align:center;

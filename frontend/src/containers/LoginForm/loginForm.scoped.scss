@@ -3,8 +3,11 @@ h2.title {
     text-align:center;
 }
 div.form {
+    box-sizing:border-box;
     padding:20px;
     display:flex;
+    height:100%;
+    background-color:var(--primiary-theme-color);
     flex-direction:column;
 }
 .links {
