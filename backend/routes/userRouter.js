@@ -82,7 +82,7 @@ router.get('/logout',jwt.jwtCheckMiddleWare, async (req, res)=>{
 })
 
 router.get('/getUserInfo', jwt.jwtCheckMiddleWare, async (req, res)=>{
-	const data = await db.readInfo(req.body.userId);
+	const data = await db.readInfo(req.body.userId, req.body.friend);
 	if(data){
 		res.status(200).send(data);
 	}
@@ -118,12 +118,12 @@ router.patch('/updateInfo', fileMW, jwt.jwtCheckMiddleWare, async (req, res)=>{
 });
 
 router.patch('/updateFriend', jwt.jwtCheckMiddleWare, async (req, res)=>{
-	if(req.body.friend){
-		const result = db.updateFriend(req.body.userId, req.body.friend);
+	if(req.body.friend && req.body.delete != undefined){
+		const result = db.updateFriend(req.body.userId, req.body.friend, req.body.delete);
 		if(result)
 			return res.status(200).send('성공');
 		else
-			return res.status(400).send('update 실패')
+			return res.status(400).send('update 실패');
 	}
 	else
 		return res.status(400).send('NO INPUT')
