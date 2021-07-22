@@ -125,7 +125,7 @@ router.delete('/deleteUser', jwt.jwtCheckMiddleWare, async (req, res)=>{
 });
 
 router.post('/refreshToken',jwt.refreshTokenMiddle, (req, res)=>{
-	if(req.body.userId)
+	if(!req.body.userId)
 		return res.status(400).send('로그인 필요')
 	else if(req.signedCookies.refresh){
 		const access = jwt.createAccessJwt(req.body.userId);

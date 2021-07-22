@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const suuuuperSecret = process.env.SECRET_KEY;
-const accessTokenExpireTime = "1h";
+const accessTokenExpireTime = 1;
 checkRefresh = (token)=>{
 	try{
 		return jwt.verify(token, suuuuperSecret, (err, decoded)=>{
@@ -39,15 +39,17 @@ module.exports.isLoginedMiddle = (req, res, next) => {
 module.exports.refreshTokenMiddle = (req, res, next)=>{
 	if(req.signedCookies.refresh)
 		req.body.userId = checkRefresh(req.signedCookies.refresh);
+	console.log(req.body.userId)
 	if(!req.body.userId && req.headers.authorization)
 		req.body.userId = checkAccess(req.headers.authorization.split('Bearer ')[1]);
+	console.log(req.body.userId)
 	next();
 }
 module.exports.jwtCheckMiddleWare = (req, res, next)=>{
 	try{
 		if(req.headers.authorization){
-			const access = checkAccess(req.headers.authorization.split('Bearer ')[1]);
-			//const access = checkAccess(req.headers.authorization);
+			//const access = checkAccess(req.headers.authorization.split('Bearer ')[1]);
+			const access = checkAccess(req.headers.authorization);
 			if(!access || !req.signedCookies.refresh)
 				res.status(401).send('토큰 만료');
 			else{
