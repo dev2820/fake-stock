@@ -24,9 +24,6 @@ export const requestLogin = async (payload) =>{
         }`;
         return res.data.access;
     }
-    else {
-        return null;
-    }
 }
 
 export const requestSignup = async (payload) => {
@@ -41,9 +38,6 @@ export const requestSignup = async (payload) => {
         }`;
         return res.data.access;
     }
-    else {
-        return null;
-    }
 }
 export const requestRefreshToken = async () => {
     const res = await axios.post("http://localhost:3000/user/refreshToken");
@@ -54,21 +48,12 @@ export const requestRefreshToken = async () => {
         }`;
         return res.data.access;
     }
-    else {
-        return null;
-    }
-    //   setTimeout(() => {
-    //     refreshToken();
-    //   }, res.data.date * 1000 - 1000 * 30);
 }
 
 export const requestLogout = async () => {
     const res = await axios.get("http://localhost:3000/user/logout");
     if(res.status === 200) {
         axios.defaults.headers.common["Authorization"] = '';
-        return null;
-    }
-    else {//로그아웃을 실패하면 뭘해야할까
         return null;
     }
 }
@@ -82,9 +67,6 @@ export const requestUserInfo = async (payload) => {
     if(res.status === 200) {
         return res.data
     }
-    else {
-        throw new Error('request failed');
-    }
 }
 export const requestFriendsInfo = async (payload) => {
     const res = await axios.get("http://localhost:3000/user/getFriendsInfo",{
@@ -95,10 +77,6 @@ export const requestFriendsInfo = async (payload) => {
     if(res.status === 200) {
         return res.data;
     }
-    else {
-        throw new Error('request failed');
-    }
-    
 }
 
 

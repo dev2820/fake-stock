@@ -52,7 +52,7 @@ export const requestRefreshToken = (payload) => async (dispatch) => {
 }
 
 export const requestLogout = () => async (dispatch) => {
-    const token = await userAPI.requestLogout();
+    await userAPI.requestLogout();
     dispatch({ type: FETCH_ACCESSTOKEN, payload: { token:null } });
 }
 
