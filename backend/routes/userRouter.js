@@ -63,7 +63,7 @@ router.get('/logout',jwt.jwtCheckMiddleWare, async (req, res)=>{
 })
 
 router.get('/getUserInfo', jwt.jwtCheckMiddleWare, async (req, res)=>{
-	const data = await db.readInfo(req.body.userId, req.body.friendlist);
+	const data = await db.readInfo(req.body.userId);
 	if(data)
 		res.status(200).send(data);
 	else

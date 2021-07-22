@@ -15,10 +15,11 @@ const pool = mariadb.createPool({
 
 module.exports.readInfo = async (email, option) => {
 	try{
-		if(option)
-			const [[row]] = await pool.query(`select message, name from ${dbTable} WHERE (email = '${email}')`);
+		let row;
+		if(!option)
+			[[row]] = await pool.query(`select message, name from ${dbTable} WHERE (email = '${email}')`);
 		else
-			const row = (await pool.query(`select friendlist from ${dbTable} WHERE (email = '${email}')`))[0][0].friendlist;
+			row = (await pool.query(`select friendlist from ${dbTable} WHERE (email = '${email}')`))[0][0].friendlist;
 		return row;
 	}catch(err){
 		console.log(err);
