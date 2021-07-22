@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const suuuuperSecret = process.env.SECRET_KEY;
-const accessTokenExpireTime = 1;
+const accessTokenExpireTime = "1h";
 checkRefresh = (token)=>{
 	try{
 		return jwt.verify(token, suuuuperSecret, (err, decoded)=>{
