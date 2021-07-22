@@ -29,11 +29,18 @@ module.exports.createAccessJwt = (email)=>{
 	return jwt.sign({id: email}, suuuuperSecret, { expiresIn: accessTokenExpireTime })
 }
 
+module.exports.isLoginedMiddle(req, res, next){
+	if(req.signedCookies.refresh ||
+		checkAccess(req.headers.authorization.split('Bearer ')[1]))
+		res.status(400).send('로그아웃 필요');
+	else
+		next();
+}
 module.exports.jwtCheckMiddleWare = (req, res, next)=>{
 	try{
 		if(req.headers.authorization){
 			const access = checkAccess(req.headers.authorization.split('Bearer ')[1]);
-			if(!access)
+			if(!access || req.signedCookies.refresh)
 				res.status(401).send('토큰 만료');
 			else{
 				req.body.userId = access;

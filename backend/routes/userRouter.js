@@ -38,8 +38,6 @@ router.post('/login', async (req, res)=>{
 	const pw = req.body.pw;
 	if(!(email && pw))
 		return res.status(400).send('no input');
-	if(!await db.isExist(email))
-		return res.status(400).send('불일치'); // email 불일치
 
 	const row = await db.isRightPw(email, pw); 
 	if(row){
@@ -49,11 +47,20 @@ router.post('/login', async (req, res)=>{
 			httpOnly: true,
 			signed: true,
 		})
-		return res.status(200).json({access,date:60}) // 로그인 성공
+		return res.status(200).json({access}) // 로그인 성공
 	}
 	else
 		return res.status(401).send('비밀번호 불일치')
 });
+
+router.get('/logout', async (req, res)=>{
+	res.clearCookie('refresh', {
+		httpOnly: true,
+		signed: true,
+		path: '/'
+	});
+	res.status(200).send('로그아웃 완료');
+})
 
 router.get('/getUserInfo', jwt.jwtCheckMiddleWare, async (req, res)=>{
 	const data = await db.readInfo(req.body.userId);
@@ -67,9 +74,6 @@ router.patch('/updatePassword',jwt.jwtCheckMiddleWare, async (req, res)=>{
 	const pw = req.body.pw;
 	if(!pw)
 		return res.status(400).send('no input');
-		
-	if(!await db.isExist(req.body.userId))
-		return res.status(400); // email 불일치
 
 	const result = await db.updatePw(req.body.userId, pw);
 	if(result)
@@ -93,26 +97,23 @@ router.delete('/deleteUser', jwt.jwtCheckMiddleWare, async (req, res)=>{
 		signed: true,
 		path: '/'
 	});
-	res.clearCookie('refresh', {
-		httpOnly: true,
-		signed: true,
-		path: '/'
-	});
-
-	if(!await db.isExist(req.body.userId))
-		return res.status(400); // email 불일치
 
 	const result = await db.delete(req.body.userId);
 		
 	if(result)
 		return res.status(200).send('삭제 완료');
 	else
-		return res.status(401).send('삭제 실패');
+		return res.status(400).send('삭제 실패');
 });
 
-router.post('/refreshToken', jwt.jwtCheckMiddleWare, (req, res)=>{
-	const access = jwt.createAccessJwt(req.body.userId);
-	res.status(200).json({access,date:60})
+router.post('/refreshToken', (req, res)=>{
+	if(req.signedCookies.refresh){
+		const access = jwt.createAccessJwt(req.body.userId);
+		res.status(200).json({access})
+	}
+	else{
+		res.status(401).send('로그인 필요')
+	}
 })
 
 router.get('/sendConfirmCode', async (req, res)=>{
