@@ -124,14 +124,16 @@ router.delete('/deleteUser', jwt.jwtCheckMiddleWare, async (req, res)=>{
 		return res.status(400).send('삭제 실패');
 });
 
-router.post('/refreshToken', (req, res)=>{
-	if(req.signedCookies.refresh){
+router.post('/refreshToken',jwt.refreshTokenMiddle, (req, res)=>{
+	if(req.body.userId)
+		return res.status(401).send('로그인 필요')
+	else if(req.signedCookies.refresh){
 		const access = jwt.createAccessJwt(req.body.userId);
 		res.status(200).json({access})
 	}
 	else{
-		const access = jwt.createAccessJwt(email);
-		const refresh = jwt.createRefreshJwt(email);
+		const access = jwt.createAccessJwt(req.body.userId);
+		const refresh = jwt.createRefreshJwt(req.body.userId);
 		res.clearCookie('refresh', {
 			httpOnly: true,
 			signed: true,

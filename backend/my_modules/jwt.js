@@ -36,6 +36,13 @@ module.exports.isLoginedMiddle = (req, res, next) => {
 	else
 		next();
 }
+module.exports.refreshTokenMiddle = (req, res, next)=>{
+	if(req.headers.authorization)
+		req.body.userId = checkAccess(req.headers.authorization.split('Bearer ')[1]);
+	if(!req.body.userId && req.signedCookies.refresh)
+		req.body.userId = checkRefresh(req.signedCookies.refresh);
+	next();
+}
 module.exports.jwtCheckMiddleWare = (req, res, next)=>{
 	try{
 		if(req.headers.authorization){
