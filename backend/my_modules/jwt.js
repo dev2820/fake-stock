@@ -48,8 +48,8 @@ module.exports.jwtCheckMiddleWare = (req, res, next)=>{
 	console.log(req.body)
 	try{
 		if(req.headers.authorization){
-			//const access = checkAccess(req.headers.authorization.split('Bearer ')[1]);
-			const access = this.checkAccess(req.headers.authorization);
+			const access = checkAccess(req.headers.authorization.split('Bearer ')[1]);
+			//const access = this.checkAccess(req.headers.authorization);
 			if(!access || !req.signedCookies.refresh)
 				res.status(401).send('토큰 만료');
 			else{
