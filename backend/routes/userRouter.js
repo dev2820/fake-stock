@@ -119,7 +119,7 @@ router.patch('/updateInfo', fileMW, jwt.jwtCheckMiddleWare, async (req, res)=>{
 
 router.patch('/addFriend', jwt.jwtCheckMiddleWare, async (req, res)=>{
 	if(req.body.friendEmail){
-		const result = db.addFriend(req.body.userId, req.body.friendEmail);
+		const result = await db.addFriend(req.body.userId, req.body.friendEmail);
 		if(result)
 			return res.status(200).send('성공');
 		else
@@ -130,7 +130,7 @@ router.patch('/addFriend', jwt.jwtCheckMiddleWare, async (req, res)=>{
 })
 router.delete('/deleteFriend', jwt.jwtCheckMiddleWare, async (req, res)=>{
 	if(req.body.friendEmail){
-		const result = db.deleteFriend(req.body.userId, req.body.friendEmail);
+		const result = await db.deleteFriend(req.body.userId, req.body.friendEmail);
 		if(result)
 			return res.status(200).send('성공');
 		else
