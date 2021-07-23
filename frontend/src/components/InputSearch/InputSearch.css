@@ -1,0 +1,33 @@
+input.inputSearch {
+    width:70%;
+    border:none;
+    background-color:transparent;
+    border-bottom:2px solid #121212;
+    /* padding:10px 5px; */
+    box-sizing: border-box;
+    height:40px;
+    font-size:1.1rem;
+    position:fixed;
+    top:25%;
+    left: 50%;
+    transform:translateX(-50%);
+}
+input:focus {
+    outline:none;
+    border-bottom:3px solid var(--primiary-text-color);
+}
+/* label {
+    position:absolute;
+    pointer-events:none;
+    color:#777777;
+    left:5px;
+    top:10px;
+    transition:0.2s;
+}
+input:focus ~ label,
+input.active ~ label {
+    top:-20px;
+    font-size:14px;
+    transition:0.2s;
+    color:var(--primiary-text-color);
+} */

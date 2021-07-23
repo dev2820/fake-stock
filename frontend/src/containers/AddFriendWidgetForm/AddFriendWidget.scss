@@ -1,0 +1,106 @@
+
+.addFriendButton{
+    background-color: transparent;
+    border:none;
+    cursor: pointer;
+    opacity: 0.5;
+   
+    &:hover{
+        opacity:1;
+        transition: 0.3s;
+    }
+}
+
+.inputSearch{
+    display:flex;
+    justify-content: center;
+}
+.addButton{
+    display: flex;
+    justify-content: center;
+}
+.activeButton{
+    width:90%;
+    --primiary-theme-color: #FFEB33;
+    --primiary-text-color: #423630;
+    --primiary-text-color-hover:#594941;
+    border: 1px solid var(--primiary-text-color);
+    background:var(--primiary-text-color);
+    border-radius:8px;
+    color:var(--primiary-theme-color);
+    padding:8px;
+    font-size:1.05rem;
+    cursor:pointer;
+
+    // position:fixed;
+    // top:80%;
+    // left:50%;
+    // transform:translateX(-50%);
+    a {
+        text-decoration: none;
+    }
+    &:hover {
+        background:var(--primiary-text-color-hover);
+        transition:0.3s;
+    }
+    &:focus {
+        outline:none;
+    }
+}
+
+.non-activeButton{
+    width:90%;
+    --primiary-theme-color: #FFEB33;
+    --primiary-text-color: #423630;
+    --primiary-text-color-hover:#594941;
+    border: 1px solid var(--primiary-text-color);
+    background:#999;
+    border-radius:8px;
+    color:var(--primiary-theme-color);
+    padding:8px;
+    font-size:1.05rem;
+    cursor:pointer;
+
+    // position:fixed;
+    // top:80%;
+    // left:50%;
+    // transform:translateX(-50%);
+    a {
+        text-decoration: none;
+    }
+    &:focus {
+        outline:none;
+    }
+}
+
+.addFriendForm {
+    height:100%;
+}
+.modal > section > header {
+    position: relative;
+    padding: 30px 64px 16px 30px;
+    background-color:#fff;
+    font-size:30px;
+    font-weight: 700;
+}
+.modal > section > header button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 30px;
+    font-size: 30px;
+    // font-weight: 700;
+    text-align: center;
+    color: #999;
+    background-color: transparent;
+    &:hover{
+        color:#000000;
+        transition:0.3s;
+      
+    }
+}
+// .modal>section>main{
+//     // padding: 250px;
+//     // border-top: 1px solid black;
+//     // border-bottom: 1px solid black;
+// }

@@ -7,19 +7,19 @@ import {
   FindPassPage,
   NotFoundPage,
   FriendListPage,
-  ChatListPage
+  ChatListPage,
 } from "./pages";
 
 export default (
   <Router>
     <Switch>
-      <Route exact path="/" component={FriendListPage}></Route>
-      <Route path="/login" component={LoginPage}></Route>
-      <Route path="/signup" component={SignupPage}></Route>
-      <Route path="/findpass" component={FindPassPage}></Route>
-      <Route path="/friend" component={FriendListPage}></Route>
-      <Route path="/chats" component={ChatListPage}></Route>
-      <Route component={NotFoundPage}></Route>
+      <Route exact path="/" component={FriendListPage} />
+      <Route path="/login" component={LoginPage} />
+      <Route path="/signup" component={SignupPage} />
+      <Route path="/findpass" component={FindPassPage} />
+      <Route path="/friend" component={FriendListPage} />
+      <Route path="/chats" component={ChatListPage} />
+      <Route component={NotFoundPage} />
     </Switch>
   </Router>
 );
