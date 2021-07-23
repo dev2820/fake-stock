@@ -99,12 +99,16 @@ module.exports.updateInfo = async (email, data)=>{
 		return false;
 	}
 }
-module.exports.updateFriend = async (email, friend) =>{
+module.exports.updateFriend = async (email, friend, delOption) =>{
 	try{
 		let list = JSON.parse((await pool.query(`select friendlist from ${dbTable} WHERE (email = '${email}')`))[0][0].friendlist);
-		if(list.includes(friend))
+		const exist = list.includes(friend);
+		if((exist && !delOption) || (!exist && delOption))
 			return false;
-		list.friends.push(data[1]);
+		if(delOption)
+			list.friends = list.friends.filter((element) => element !== friend)
+		else
+			list.friends.push(friend);
 		
 		const result = await pool.query(`UPDATE ${dbTable} SET friendlist = '${JSON.stringify(list)}' WHERE (email = '${email}')`)
 

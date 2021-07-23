@@ -7,7 +7,7 @@ import {
   FindPassPage,
   NotFoundPage,
   FriendListPage,
-  ChatListPage
+  ChatListPage,
 } from "./pages";
 
 export default (

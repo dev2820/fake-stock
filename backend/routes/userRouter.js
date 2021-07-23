@@ -8,7 +8,26 @@ const mailer = require('../my_modules/myMailer');
 const cookieParser = require('cookie-parser');
 const redis = require('redis');
 const client = redis.createClient();
+const multer = require('multer');
 router.use(cookieParser(process.env.COOKIE_KEY));
+
+const storage = multer.diskStorage({ 
+	destination(req, file, callback) {
+		if(file.fieldname == 'bg')
+			callback(null, './image/bgpic');
+		else if(file.fieldname == 'profile')
+			callback(null, './image/profile');
+		else
+			callback(null, false);
+	}, 
+	filename(req, file, callback) {
+		const name = jwt.checkAccess(req.headers.authorization)
+		const ext = '.'+ file.mimetype.split('/')[1]
+		callback(null, name + ext);
+	}
+});
+const upload = multer({storage});
+const fileMW = upload.fields([{name:'profile', maxCount:1}, {name:'bg', maxCount:1}]);
 
 router.post('/createUser',jwt.isLoginedMiddle, async (req, res) => {
 	const email = req.body.email;
@@ -27,10 +46,10 @@ router.post('/createUser',jwt.isLoginedMiddle, async (req, res) => {
 			httpOnly: true,
 			signed: true,
 		})
-		return res.json({access,date:60});
+		return res.status(200).json({access});
 	}
 	else
-		return res.send('실패');
+		return res.status(400).send('실패');
 });
 
 router.post('/login',jwt.isLoginedMiddle, async (req, res)=>{
@@ -63,9 +82,10 @@ router.get('/logout',jwt.jwtCheckMiddleWare, async (req, res)=>{
 })
 
 router.get('/getUserInfo', jwt.jwtCheckMiddleWare, async (req, res)=>{
-	const data = await db.readInfo(req.body.userId);
-	if(data)
+	const data = await db.readInfo(req.body.userId, req.body.friend);
+	if(data){
 		res.status(200).send(data);
+	}
 	else
 		res.status(400).send('정보없음')
 });
@@ -81,7 +101,6 @@ router.patch('/updatePassword',jwt.jwtCheckMiddleWare, async (req, res)=>{
 			path: '/'
 		});
 
-
 	const result = await db.updatePw(req.body.userId, pw);
 	if(result)
 		return res.send('update 성공');
@@ -89,7 +108,7 @@ router.patch('/updatePassword',jwt.jwtCheckMiddleWare, async (req, res)=>{
 		return res.status(400).send('패스워드 갱신 실패');
 });
 
-router.patch('/updateInfo', jwt.jwtCheckMiddleWare, async (req, res)=>{
+router.patch('/updateInfo', fileMW, jwt.jwtCheckMiddleWare, async (req, res)=>{
 	const data = [req.body.name, req.body.message];
 	const result = await db.updateInfo(req.body.userId, data);
 	if(result)
@@ -99,27 +118,27 @@ router.patch('/updateInfo', jwt.jwtCheckMiddleWare, async (req, res)=>{
 });
 
 router.patch('/updateFriend', jwt.jwtCheckMiddleWare, async (req, res)=>{
-	if(req.body.friend){
-		const result = db.updateFriend(req.body.userId, req.body.friend);
+	if(req.body.friend && req.body.delete != undefined){
+		const result = db.updateFriend(req.body.userId, req.body.friend, req.body.delete);
 		if(result)
 			return res.status(200).send('성공');
 		else
-			return res.status(400).send('update 실패')
+			return res.status(400).send('update 실패');
 	}
 	else
-		return res.status(400).send('update 실패')
+		return res.status(400).send('NO INPUT')
 })
 router.delete('/deleteUser', jwt.jwtCheckMiddleWare, async (req, res)=>{
-	res.clearCookie('refresh', {
-		httpOnly: true,
-		signed: true,
-		path: '/'
-	});
-
 	const result = await db.delete(req.body.userId);
 		
-	if(result)
+	if(result){
+		res.clearCookie('refresh', {
+			httpOnly: true,
+			signed: true,
+			path: '/'
+		});
 		return res.status(200).send('삭제 완료');
+	}
 	else
 		return res.status(400).send('삭제 실패');
 });

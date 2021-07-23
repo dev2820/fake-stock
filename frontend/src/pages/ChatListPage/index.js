@@ -4,8 +4,8 @@ import AsideMenuForm from "../../containers/AsideMenuForm";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser,faComment } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser, faComment } from "@fortawesome/free-solid-svg-icons";
 const ChatListPage = () => {
   const { accessToken } = useSelector(({ userReducer }) => ({
     accessToken: userReducer.accessToken,
@@ -21,4 +21,4 @@ const ChatListPage = () => {
   );
 };
 
-export default ChatListPage
+export default ChatListPage;
