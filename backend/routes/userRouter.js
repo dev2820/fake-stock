@@ -117,9 +117,20 @@ router.patch('/updateInfo', fileMW, jwt.jwtCheckMiddleWare, async (req, res)=>{
 		return res.status(401).send('갱신 실패');
 });
 
-router.patch('/updateFriend', jwt.jwtCheckMiddleWare, async (req, res)=>{
-	if(req.body.friend && req.body.delete != undefined){
-		const result = db.updateFriend(req.body.userId, req.body.friend, req.body.delete);
+router.patch('/addFriend', jwt.jwtCheckMiddleWare, async (req, res)=>{
+	if(req.body.friendEmail){
+		const result = db.addFriend(req.body.userId, req.body.friendEmail);
+		if(result)
+			return res.status(200).send('성공');
+		else
+			return res.status(400).send('update 실패');
+	}
+	else
+		return res.status(400).send('NO INPUT')
+})
+router.delete('/deleteFriend', jwt.jwtCheckMiddleWare, async (req, res)=>{
+	if(req.body.friendEmail){
+		const result = db.deleteFriend(req.body.userId, req.body.friendEmail);
 		if(result)
 			return res.status(200).send('성공');
 		else

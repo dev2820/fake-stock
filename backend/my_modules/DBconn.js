@@ -99,16 +99,30 @@ module.exports.updateInfo = async (email, data)=>{
 		return false;
 	}
 }
-module.exports.updateFriend = async (email, friend, delOption) =>{
+module.exports.addFriend = async (email, friend) =>{
 	try{
 		let list = JSON.parse((await pool.query(`select friendlist from ${dbTable} WHERE (email = '${email}')`))[0][0].friendlist);
-		const exist = list.includes(friend);
-		if((exist && !delOption) || (!exist && delOption))
+		if(list.includes(friend))
 			return false;
-		if(delOption)
-			list.friends = list.friends.filter((element) => element !== friend)
-		else
-			list.friends.push(friend);
+		list.friends.push(friend);
+		
+		const result = await pool.query(`UPDATE ${dbTable} SET friendlist = '${JSON.stringify(list)}' WHERE (email = '${email}')`)
+
+		if(result[0].changedRows === 1)
+			return true;
+		else 
+			return false;
+	}catch(err){
+		return false;
+	}
+
+}
+module.exports.deleteFriend = async (email, friend) =>{
+	try{
+		let list = JSON.parse((await pool.query(`select friendlist from ${dbTable} WHERE (email = '${email}')`))[0][0].friendlist);
+		if(!list.includes(friend))
+			return false;
+		list.friends = list.friends.filter((element) => element !== friend)
 		
 		const result = await pool.query(`UPDATE ${dbTable} SET friendlist = '${JSON.stringify(list)}' WHERE (email = '${email}')`)
 
