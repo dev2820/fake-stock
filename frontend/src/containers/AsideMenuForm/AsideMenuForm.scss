@@ -1,0 +1,10 @@
+aside.routes {
+    width:80px;
+    background-color:var(--aside-color);
+    display:flex;
+    flex-direction:column;
+    a {
+        color:#aaaaaa;
+        margin: 0 auto;
+    }
+}

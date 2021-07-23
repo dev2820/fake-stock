@@ -1,15 +1,6 @@
 #friendsListPage {
     display:flex;
     height:100vh;
-    aside.routes {
-        width:80px;
-        background-color:var(--aside-color);
-        display:flex;
-        flex-direction:column;
-        a {
-            margin: 0 auto;
-        }
-    }
     main {
         flex-grow:1;
         position:relative;

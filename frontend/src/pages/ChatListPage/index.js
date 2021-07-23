@@ -1,6 +1,6 @@
 import React from "react";
 import "./ChatListPage.css";
-
+import AsideMenuForm from "../../containers/AsideMenuForm";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
@@ -12,14 +12,7 @@ const ChatListPage = () => {
   }));
   return (
     <div id="homePage">
-      <aside class="menu">
-        <Link to="/friend">
-          <FontAwesomeIcon icon={faUser} />
-        </Link>
-        <Link to="/chats">
-          <FontAwesomeIcon icon={faComment} />
-        </Link>
-      </aside>
+      <AsideMenuForm/>
       <main>
         <header>채팅</header>
       </main>

@@ -27,7 +27,7 @@ const FriendListForm = () => {
             <MyProfile profile={userInfo}/>
             <hr/>
             <div>
-                친구 수 {friends.length}
+                <small>친구 수 {friends.length}</small>
                 {friends.map((friend,index)=>{
                 <FriendProfile profile={friend} key={index} onClick={()=>{setDetailProfile(friend);setIsShowDetail(true);}}/>
                 })}

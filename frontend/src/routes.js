@@ -17,7 +17,6 @@ export default (
       <Route path="/login" component={LoginPage}></Route>
       <Route path="/signup" component={SignupPage}></Route>
       <Route path="/findpass" component={FindPassPage}></Route>
-      <Route path="/friend" component={FriendListPage}></Route>
       <Route path="/chats" component={ChatListPage}></Route>
       <Route component={NotFoundPage}></Route>
     </Switch>
