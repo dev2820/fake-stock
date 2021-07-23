@@ -11,7 +11,7 @@ checkRefresh = (token)=>{
 		return undefined;
 	}
 }
-checkAccess = (token)=>{
+module.exports.checkAccess = (token)=>{
 	try{
 		return jwt.verify(token, suuuuperSecret, {expiresIn: accessTokenExpireTime }, (err, decoded)=>{
 			return decoded.id;
@@ -30,17 +30,26 @@ module.exports.createAccessJwt = (email)=>{
 }
 
 module.exports.isLoginedMiddle = (req, res, next) => {
-	if(req.signedCookies.refresh ||
-		checkAccess(req.headers.authorization.split('Bearer ')[1]))
+	if(req.signedCookies.refresh && req.headers.authorization)
 		res.status(400).send('로그아웃 필요');
 	else
 		next();
 }
+module.exports.refreshTokenMiddle = (req, res, next)=>{
+	if(req.signedCookies.refresh)
+		req.body.userId = checkRefresh(req.signedCookies.refresh);
+	console.log(req.body.userId)
+	if(!req.body.userId && req.headers.authorization)
+		req.body.userId = checkAccess(req.headers.authorization.split('Bearer ')[1]);
+	console.log(req.body.userId)
+	next();
+}
 module.exports.jwtCheckMiddleWare = (req, res, next)=>{
+	console.log(req.body)
 	try{
 		if(req.headers.authorization){
 			const access = checkAccess(req.headers.authorization.split('Bearer ')[1]);
-			//const access = checkAccess(req.headers.authorization);
+			//const access = this.checkAccess(req.headers.authorization);
 			if(!access || !req.signedCookies.refresh)
 				res.status(401).send('토큰 만료');
 			else{
@@ -56,7 +65,7 @@ module.exports.jwtCheckMiddleWare = (req, res, next)=>{
 			next()
 		}
 		else{
-			res.status(401).send("로그인 필요")
+			res.status(400).send("로그인 필요")
 		}
 	}
 	catch(err){

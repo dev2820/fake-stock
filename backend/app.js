@@ -4,8 +4,6 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors');
-const multer = require('multer');
-
 require('dotenv').config();
 var indexRouter = require('./routes/sendHtml');
 var usersRouter = require('./routes/userRouter');
@@ -25,6 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(`${process.env.COOKIE_KEY}`));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('./image'));
 
 app.use('/user',usersRouter);
 app.use('/*', indexRouter);
