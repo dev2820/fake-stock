@@ -69,7 +69,7 @@ export const requestUserInfo = (payload) => async (dispatch) => {
 export const requestFriendsInfo = (payload) => async (dispatch) => {
   try {
     const infoList = await userAPI.requestFriendsInfo(payload);
-    dispatch({ type: FETCH_FRIENDS_INFO, payload: { infoList:[] } });
+    dispatch({ type: FETCH_FRIENDS_INFO, payload: { infoList } });
   }
   catch(err) {
     dispatch({ type: FETCH_FRIENDS_INFO, payload: { infoList:[] } });

@@ -24,7 +24,7 @@ export const requestLogin = async (payload) => {
     }`;
     return res.data.access;
   } else {
-    return null;
+    throw new Error(res.message);
   }
 };
 
@@ -40,7 +40,7 @@ export const requestSignup = async (payload) => {
     }`;
     return res.data.access;
   } else {
-    return null;
+    throw new Error(res.message);
   }
 };
 export const requestRefreshToken = async () => {
@@ -52,11 +52,8 @@ export const requestRefreshToken = async () => {
     }`;
     return res.data.access;
   } else {
-    return null;
+    throw new Error(res.message);
   }
-  //   setTimeout(() => {
-  //     refreshToken();
-  //   }, res.data.date * 1000 - 1000 * 30);
 };
 
 export const requestLogout = async () => {
@@ -79,8 +76,7 @@ export const requestUserInfo = async (payload) => {
   if (res.status === 200) {
     return res.data;
   } else {
-    // throw new Error("request failed");
-    return null;
+    throw new Error(res.message)
   }
 };
 export const requestFriendsInfo = async (payload) => {
@@ -92,7 +88,7 @@ export const requestFriendsInfo = async (payload) => {
   if (res.status === 200) {
     return res.data;
   } else {
-    // throw new Error("request failed");
-    return null;
+    throw new Error(res.message)
   }
 };
+
