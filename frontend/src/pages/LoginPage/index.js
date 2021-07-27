@@ -13,13 +13,14 @@ const LoginPage = () => {
     dispatch(requestRefreshToken());
     return () => {}; //unmount시 아무것도 안함
   }, [dispatch]);
+
   return (
-    <div>
+    <React.Fragment>
       <div className="center">
         <LoginForm />
       </div>
-      {isAccessToken && <Redirect to="/" />}
-    </div>
+      {isAccessToken && <Redirect to="/"/>}
+    </React.Fragment>
   );
 };
 

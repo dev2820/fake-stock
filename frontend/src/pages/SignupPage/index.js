@@ -10,12 +10,12 @@ const SignupPage = () => {
     isAccessToken: !!userReducer.accessToken,
   }));
   return (
-    <div>
+    <React.Fragment>
       <div className="center">
         <SignupForm />
       </div>
       {isAccessToken && <Redirect to="/" />}
-    </div>
+    </React.Fragment>
   );
 };
 

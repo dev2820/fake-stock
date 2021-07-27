@@ -12,7 +12,7 @@ const Homepage = () => {
     accessToken: userReducer.accessToken,
   }));
   return (
-    <div id="homePage">
+    <React.Fragment>
       <aside class="menu">
         <Link to="/friend">
           <FontAwesomeIcon icon={faUser} />
@@ -26,7 +26,7 @@ const Homepage = () => {
         <HomepageForm />
       </main>
       {accessToken === null && <Redirect to="/login" />}
-    </div>
+    </React.Fragment>
   );
 };
 
