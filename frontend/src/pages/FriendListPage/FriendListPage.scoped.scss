@@ -1,24 +1,19 @@
-#friendsListPage {
-    display:flex;
-    height:100vh;
-    main {
-        flex-grow:1;
-        position:relative;
-        header {
-            height:50px;
-            display:flex;
-            justify-content: space-between;
-            padding:0 20px;
-            margin-top:10px;
-            span.title {
-                font-weight:900;
-                font-size:1.2rem;
-                margin:auto 0;
-            }
-            span.menu {
-                margin:auto 0;
-            }
+main {
+    flex-grow:1;
+    position:relative;
+    header {
+        height:50px;
+        display:flex;
+        justify-content: space-between;
+        padding:0 20px;
+        margin-top:10px;
+        span.title {
+            font-weight:900;
+            font-size:1.2rem;
+            margin:auto 0;
+        }
+        span.menu {
+            margin:auto 0;
         }
     }
 }
-
