@@ -62,7 +62,7 @@ export const requestUserInfo = (payload) => async (dispatch) => {
     dispatch({ type: FETCH_USERINFO, payload: { userInfo:userInfo } });
   }
   catch(err) {
-    dispatch({ type: FETCH_USERINFO, payload: { userInfo:null } });
+    dispatch({ type: FETCH_USERINFO, payload: { userInfo:{} } });
   }
 }
 

@@ -21,15 +21,15 @@ const AsideMenuForm  = () => {
         <div className="route-menus">
             <div className="main-menu">
                 <NavLink exact to="/" title="친구" activeStyle={activeStyle}>
-                    <FontAwesomeIcon className="fa-2x" icon={faUser}/>
+                    <FontAwesomeIcon className="fa-lg" icon={faUser}/>
                 </NavLink>
                 <NavLink to="/chats" title="채팅" activeStyle={activeStyle}>
-                    <FontAwesomeIcon className="fa-2x" icon={faComment} />
+                    <FontAwesomeIcon className="fa-lg" icon={faComment} />
                 </NavLink>
             </div>
             <div className="sub-menu">
                 <a href="#" title="로그아웃" onClick={logout}>
-                    <FontAwesomeIcon className="fa-2x" icon={faSignOutAlt} />
+                    <FontAwesomeIcon className="fa-lg" icon={faSignOutAlt} />
                 </a>
             </div>
         </div>

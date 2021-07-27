@@ -10,26 +10,30 @@ import SimpleFriendProfile from "../../components/SimpleFriendProfile";
 const FriendListForm = () => {
   const [isShowDetail, setIsShowDetail] = useState(false);
   const [detailProfile, setDetailProfile] = useState({});
-  const { userInfo, friends, email } = useSelector(({ userReducer }) => {
+  const { isAccessToken,userInfo, friends, email } = useSelector(({ userReducer }) => {
     return {
-      email: userReducer.email,
+      isAccessToken: !!userReducer.accessToken,
       userInfo: userReducer.userInfo,
-      friends: userReducer.friendsInfo,
+      friends: [],//userReducer.friendsInfo || [],
+      email: userReducer.email,
     };
   });
+  console.log(friends)
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(requestUserInfo(email));
-    dispatch(requestFriendsInfo(email));
+    if(isAccessToken){
+      dispatch(requestUserInfo(email));
+      dispatch(requestFriendsInfo(email));
+    }
     return () => {}; // unmount시 아무것도 안함
   }, [dispatch]);
   return (
     <div>
-      <SimpleMyProfile profile={userInfo} />
-      <hr />
+      <SimpleMyProfile profile={userInfo || {}} />
+      <hr/>
       <div>
-        친구 수 {friends.length}
-        {friends.map((friend, index) => {
+        친구 수 {friends.length || -1}
+        {friends && friends.map((friend, index) => {
           <SimpleFriendProfile
             profile={friend}
             key={index}

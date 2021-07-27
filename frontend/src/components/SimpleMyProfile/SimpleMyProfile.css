@@ -1,0 +1,19 @@
+.simple-my-profile {
+    display:flex;
+    flex-direction:row;
+}
+.simple-my-profile .profile-info {
+    display:flex;
+    flex-direction:column;
+    margin-left:20px;
+}
+.simple-my-profile .profile-image {
+    width:50px;
+    height:50px;
+    border-radius:20px;
+}
+.simple-my-profile .name {
+    font-size:1.2rem;
+    font-weight:bold;
+    margin:auto 0;
+}

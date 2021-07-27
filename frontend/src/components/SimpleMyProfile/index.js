@@ -1,11 +1,13 @@
 import "./SimpleMyProfile.css";
-
+import defaultProfile from '../../assets/images/default_profile_img.jpg'
 const SimpleMyProfile = ({ profile }) => {
   return (
-    <div>
-      <img className="profile=image" src={profile && profile.img} />
-      <span className="status-message">{profile && profile.statusMessage}</span>
-      <span className="name">{profile && profile.name}</span>
+    <div className="simple-my-profile">
+      <img className="profile-image" src={(profile && profile.img) || defaultProfile} />
+      <div className="profile-info">
+        <span className="name">{profile && profile.name}</span>
+        {profile.statusMessage && <span className="status-message">{profile.statusMessage}</span>}
+      </div>
     </div>
   );
 };

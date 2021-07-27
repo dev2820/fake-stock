@@ -1,0 +1,19 @@
+.simple-friend-profile {
+    display:flex;
+    flex-direction:row;
+}
+.simple-friend-profile .profile-info {
+    display:flex;
+    flex-direction:column;
+    margin-left:20px;
+}
+.simple-friend-profile .profile-image {
+    width:30px;
+    height:30px;
+    border-radius:20px;
+}
+.simple-friend-profile .name {
+    font-size:1.2rem;
+    font-weight:bold;
+    margin:auto 0;
+}
