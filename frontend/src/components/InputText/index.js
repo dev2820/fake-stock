@@ -2,7 +2,7 @@ import "./InputText.scoped.scss";
 
 const InputText = (props) => {
   return (
-    <div>
+    <div class="form-input-text">
       <input
         type="text"
         className={props.value ? "active" : ""}
