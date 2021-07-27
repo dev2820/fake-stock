@@ -1,24 +1,19 @@
 import React /*, { useEffect, useState } */ from "react";
 import "./FriendListPage.scoped.scss";
-import FriendListForm from '../../containers/FriendListForm'
-import AsideMenuForm from "../../containers/AsideMenuForm";
 
-import { useDispatch,useSelector } from "react-redux";
 import { Redirect } from "react-router";
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser,faComment,faSearch,faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { requestLogout } from '../../modules/users'
-import AddFriendWidgetForm from "../../containers/AddFriendWidgetForm";
-
 import { useDispatch, useSelector } from "react-redux";
-// import { Redirect } from "react-router";
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faComment, faSearch } from "@fortawesome/free-solid-svg-icons";
-import { requestLogout } from "../../modules/users";
+
+import AddFriendWidgetForm from "../../containers/AddFriendWidgetForm";
 import MyProfileWidget from "../../containers/MyProfileWidget";
 import FriendProfileWidget from "../../containers/FriendProfileWidget";
+import FriendListForm from '../../containers/FriendListForm'
+import AsideMenuForm from "../../containers/AsideMenuForm";
+
 const FriendListPage = () => {
   const dispatch = useDispatch();
   const { isAccessToken } = useSelector(({ userReducer }) => ({
@@ -26,10 +21,11 @@ const FriendListPage = () => {
   }));
   // const [isSearchWidgetOn, setIsSearchWidgetOn] = useState(false);
   // const [isPlusFriendWidgetOn, setIsPlusFriendWidgetOn] = useState(false);
-
   return (
-    <div id="friendsListPage">
-      <AsideMenuForm/>
+    <React.Fragment>
+      <aside>
+        <AsideMenuForm/>
+      </aside>
       <main>
         <header>
           <span className="title">친구</span>
@@ -45,8 +41,8 @@ const FriendListPage = () => {
         <FriendProfileWidget />
         {/*<친구-검색-태그> */}
       </main>
-      {/* {!isAccessToken && <Redirect to="/login" />} */}
-    </div>
+      {!isAccessToken && <Redirect to="/login" />}
+    </React.Fragment>
   );
 };
 

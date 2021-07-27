@@ -11,13 +11,15 @@ const ChatListPage = () => {
     accessToken: userReducer.accessToken,
   }));
   return (
-    <div id="homePage">
-      <AsideMenuForm/>
+    <React.Fragment>
+      <aside>
+        <AsideMenuForm/>
+      </aside>
       <main>
         <header>채팅</header>
       </main>
       {accessToken === null && <Redirect to="/login" />}
-    </div>
+    </React.Fragment>
   );
 };
 
