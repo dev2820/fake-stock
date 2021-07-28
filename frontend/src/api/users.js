@@ -80,15 +80,16 @@ export const requestUserInfo = async (payload) => {
   }
 };
 export const requestFriendsInfo = async (payload) => {
-  const res = await axios.get("http://localhost:3000/user/getFriendsInfo", {
-    params: {
-      email: payload.email,
-    },
-  });
-  if (res.status === 200) {
-    return res.data;
-  } else {
-    throw new Error(res.message)
-  }
+  // const res = await axios.get("http://localhost:3000/user/getFriendsInfo", {
+  //   params: {
+  //     email: payload.email,
+  //   },
+  // });
+  return [{name:'name1',message:'',profileImg:''},{name:'name2',message:'abcde',profileImg:''},{name:'name3',message:'12345',profileImg:''}];
+  // if (res.status === 200) {
+  //   return res.data;
+  // } else {
+  //   throw new Error(res.message)
+  // }
 };
 

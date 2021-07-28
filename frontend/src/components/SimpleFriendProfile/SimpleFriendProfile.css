@@ -1,19 +1,28 @@
 .simple-friend-profile {
     display:flex;
     flex-direction:row;
+    height:70px;
 }
 .simple-friend-profile .profile-info {
     display:flex;
     flex-direction:column;
+    height:50px;
+    margin:auto 0;
     margin-left:20px;
 }
 .simple-friend-profile .profile-image {
-    width:30px;
-    height:30px;
-    border-radius:20px;
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    margin:auto 0;
+    cursor:pointer;
 }
 .simple-friend-profile .name {
     font-size:1.2rem;
     font-weight:bold;
+    margin:auto 0;
+}
+.simple-friend-profile .status-message {
+    /* font-size:0.9rem; */
     margin:auto 0;
 }

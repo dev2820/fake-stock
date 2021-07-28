@@ -8,17 +8,16 @@ import SimpleFriendProfile from "../../components/SimpleFriendProfile";
 // import FriendProfileWidget from "../../containers/FriendProfileWidget";
 
 const FriendListForm = () => {
-  const [isShowDetail, setIsShowDetail] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
   const [detailProfile, setDetailProfile] = useState({});
   const { isAccessToken,userInfo, friends, email } = useSelector(({ userReducer }) => {
     return {
       isAccessToken: !!userReducer.accessToken,
       userInfo: userReducer.userInfo,
-      friends: [],//userReducer.friendsInfo || [],
+      friends: userReducer.friendsInfo || [],
       email: userReducer.email,
     };
   });
-  console.log(friends)
   const dispatch = useDispatch();
   useEffect(() => {
     if(isAccessToken){
@@ -27,25 +26,29 @@ const FriendListForm = () => {
     }
     return () => {}; // unmount시 아무것도 안함
   }, [dispatch]);
+  
+  console.log(friends)
   return (
     <div>
-      <SimpleMyProfile profile={userInfo || {}} />
+      <SimpleMyProfile 
+        profile={userInfo || {}}
+        onClick={()=>setShowDetail(true)}
+      />
       <hr/>
       <div>
-        친구 수 {friends.length || -1}
-        {friends && friends.map((friend, index) => {
-          <SimpleFriendProfile
+        <h3>
+          친구 수 {friends.length || -1}
+        </h3>
+        {friends.map((friend, index) => {
+          return (<SimpleFriendProfile
             profile={friend}
             key={index}
-            onClick={() => {
-              setDetailProfile(friend);
-              setIsShowDetail(true);
-            }}
-          />;
+            onClick={()=>setShowDetail(true)}
+          />);
         })}
       </div>
-      <SimpleFriendProfile />
-      {/* <친구-자세한-프로필 show={isShowDetail} profile={detailProfile} close={()=>setIsShowDetail(false)}/> */}
+      {/* <SimpleFriendProfile /> */}
+      {/* <친구-자세한-프로필 show={ShowDetail} profile={profile} close={()=>setShowDetail(false)}/> */}
     </div>
   );
 };
