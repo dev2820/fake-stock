@@ -18,7 +18,6 @@ const MyProfileWidget = (props) => {
       <ModalCard
         open={show}
         close={closeModal}
-        // type="profile"
         main={
           <div className="profile">
             <div className="profileImageContainer">

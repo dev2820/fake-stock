@@ -2,7 +2,7 @@ import "../../components/InputSearch/InputSearch.css";
 
 const InputSearch = (props) => {
   return (
-    <div>
+    <div /*className="inputSearchDiv"*/>
       <input
         className="inputSearch"
         type="text"

@@ -27,7 +27,6 @@ const AddFriendWidgetForm = () => {
   const onClick = useCallback(() => {
     dispatch(requestUserInfo({ email }));
   }, [dispatch, email]);
-
   const onEnter = (e) => {
     if (e.key === "Enter") {
       onClick();
@@ -51,7 +50,7 @@ const AddFriendWidgetForm = () => {
         // type="addFriendForm"
         header="친구 추가"
         main={
-          <div /*className="inputSearch"*/>
+          <div className="content">
             <InputSearch
               placeholder="친구 ID"
               value={email}
@@ -59,8 +58,7 @@ const AddFriendWidgetForm = () => {
               onKeyPress={onEnter}
               onKeyUp={onCount}
             />
-            {emailLength}
-            {/* input창 안에 어떻게 넣죠 이걸?  help~~~~~*/}
+            <span className="emailLength"> {emailLength}</span>
           </div>
         }
         footer={

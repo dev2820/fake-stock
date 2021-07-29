@@ -1,14 +1,14 @@
-input.inputSearch {
-    width:70%;
+.inputSearch {
+    width:85%;
     border:none;
     background-color:transparent;
     border-bottom:2px solid #121212;
     /* padding:10px 5px; */
-    box-sizing: border-box;
-    height:40px;
+    /* box-sizing: border-box; */
+    /* height:40px; */
     font-size:1.1rem;
-    position:fixed;
-    top:25%;
+    position:absolute;
+    top:10%;
     left: 50%;
     transform:translateX(-50%);
 }

@@ -14,14 +14,48 @@
     cursor: pointer;
     border: 0;
 }
-.modal > section {
+.modalCard {
     width: 75%;
     height:80%;
     margin:0 auto;
     border-radius: .3rem;
     background-color: #fff;
     animation: modal-show .3s;
-   
+    display:flex;
+    flex-direction: column;  
+}
+.modalHeader{
+    position:relative;
+    padding:20px 0 20px 40px;
+    font-size: 30px;
+    // border-bottom: 1px solid gray;
+
+    
+}
+.modalHeader button{
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 30px;
+    font-size: 30px;
+    font-weight: 700;
+    text-align: center;
+    color: #999;
+    background-color: transparent;
+    &:hover{
+        color:#000000;
+        transition:0.3s;
+    }
+}
+.modalMain{
+    position:relative;
+    height: 430px;
+    // max-height: 430px;
+    flex-shrink: 1;
+}
+.modalFooter{
+    padding:20px;
+    // border-top: 1px solid gray;
 }
 .modal.openModal {
     display: flex;

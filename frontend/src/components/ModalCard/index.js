@@ -7,24 +7,16 @@ const ModalCard = (props) => {
   return (
     <div className={open ? "openModal modal" : "modal"}>
       {open ? (
-        <section>
-          <header>
+        <div className="modalCard">
+          <header className="modalHeader">
             {header}
             <button className="close" onClick={close}>
               &times;
             </button>
           </header>
-          <main>
-            {/* <div className={type}> */}
-            {main}
-            {/* {props.children} */}
-            {/* </div> */}
-          </main>
-          <footer>
-            {/* <div className={type}>{footer}</div> */}
-            {footer}
-          </footer>
-        </section>
+          <main className="modalMain">{main}</main>
+          <footer className="modalFooter">{footer}</footer>
+        </div>
       ) : null}
     </div>
   );
