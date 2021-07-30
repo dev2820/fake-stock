@@ -10,7 +10,7 @@ const FETCH_ACCESSTOKEN = "user/FETCH_ACCESSTOKEN";
 const initialState = {
   email: "",
   userInfo: null,
-  friendsInfo: ["first", "second"],
+  friendsInfo: [],
   accessToken: null,
 };
 
