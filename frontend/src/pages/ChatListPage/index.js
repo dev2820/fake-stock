@@ -13,7 +13,7 @@ const ChatListPage = () => {
   return (
     <React.Fragment>
       <aside>
-        <AsideMenuForm/>
+        <AsideMenuForm />
       </aside>
       <main>
         <header>채팅</header>

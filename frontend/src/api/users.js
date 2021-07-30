@@ -45,7 +45,7 @@ export const requestSignup = async (payload) => {
 };
 export const requestRefreshToken = async () => {
   const res = await axios.post("http://localhost:3000/user/refreshToken");
-  //reducer accessToken 갱신
+  // reducer accessToken 갱신
   if (res.status === 200) {
     axios.defaults.headers.common["Authorization"] = `Bearer ${
       res.data.access

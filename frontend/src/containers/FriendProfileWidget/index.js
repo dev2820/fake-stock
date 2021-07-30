@@ -1,23 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import ModalCard from "../../components/ModalCard";
-import "../../containers/MyProfileWidget/MyProfileWidget.scss";
+// import "../../containers/MyProfileWidget/MyProfileWidget.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from "@fortawesome/free-solid-svg-icons";
-import SampleProfileImage from "../../assets/images/happy.png";
-const FriendProfileWidget = () => {
-  const [show, setShow] = useState(false);
-  const openModal = () => {
-    setShow(true);
-  };
-  const closeModal = () => {
-    setShow(false);
-  };
+import SampleProfileImage from "../../assets/images/default_profile_img.jpg";
+const FriendProfileWidget = (props) => {
+  const { open, close } = props;
+
   return (
     <React.Fragment>
-      <button onClick={openModal}>친구 프로필</button>
+      {/* <button onClick={openModal}>친구 프로필</button> */}
       <ModalCard
-        open={show}
-        close={closeModal}
+        open={open}
+        close={close}
         type="profile"
         main={
           <div className="profile">

@@ -1,10 +1,10 @@
 import React, { useState, useCallback } from "react";
-import './loginForm.scoped.scss'
+import "./loginForm.scoped.scss";
 import CardUI from "../../components/CardUI";
 import Button from "../../components/CustomButton";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { requestLogin,/*refreshAccessToken*/ } from "../../modules/users";
+import { requestLogin /*refreshAccessToken*/ } from "../../modules/users";
 
 import InputEmail from "../../components/InputEmail";
 import InputPassword from "../../components/InputPassword";
@@ -25,14 +25,14 @@ const LoginForm = () => {
   const onClick = useCallback(() => {
     dispatch(
       requestLogin({
-        email, 
-        password
+        email,
+        password,
       })
     );
   }, [email, password, dispatch]);
-
-  return (
-    <CardUI>
+  
+    return (
+  <CardUI>
       <div className="form">
         <h2 className="title">LOG IN</h2>
         <InputEmail

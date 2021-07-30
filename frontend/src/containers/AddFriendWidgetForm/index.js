@@ -7,18 +7,20 @@ import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import { requestUserInfo } from "../../api/users";
 
-const AddFriendWidgetForm = () => {
+const AddFriendWidgetForm = (props) => {
+  const { open, close } = props;
+
   const [email, setEmail] = useState("");
-  const [show, setShow] = useState(false);
+  // const [show, setShow] = useState(false);
   const [length, setLength] = useState(0);
   const dispatch = useDispatch();
-
-  const openModal = () => {
-    setShow(true);
-  };
-  const closeModal = () => {
-    setShow(false);
-  };
+  // console.log(open);
+  // const openModal = () => {
+  //   setShow(true);
+  // };
+  // const closeModal = () => {
+  //   setShow(false);
+  // };
 
   const onChangeEmail = useCallback((e) => {
     setEmail(e.target.value);
@@ -41,12 +43,13 @@ const AddFriendWidgetForm = () => {
 
   return (
     <React.Fragment>
-      <button onClick={openModal} className="addFriendButton">
+      {/* <button onClick={openModal} className="addFriendButton">
         <FontAwesomeIcon icon={faUserPlus} />
-      </button>
+      </button> */}
       <ModalCard
-        open={show}
-        close={closeModal}
+        open={open}
+        // open={show}
+        close={close}
         // type="addFriendForm"
         header="친구 추가"
         main={
@@ -71,9 +74,7 @@ const AddFriendWidgetForm = () => {
             </button>
           </div>
         }
-      >
-        <div className="form" />
-      </ModalCard>
+      />
     </React.Fragment>
   );
 };

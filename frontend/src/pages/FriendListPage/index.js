@@ -1,17 +1,22 @@
-import React /*, { useEffect, useState } */ from "react";
+import React, { useState } from "react";
 import "./FriendListPage.scoped.scss";
 
 import { Redirect } from "react-router";
 import { NavLink } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser,faComment,faSearch,faUserPlus } from "@fortawesome/free-solid-svg-icons";
-import { requestLogout } from '../../modules/users'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faUser,
+  faComment,
+  faSearch,
+  faUserPlus,
+} from "@fortawesome/free-solid-svg-icons";
+import { requestLogout } from "../../modules/users";
 import { useDispatch, useSelector } from "react-redux";
 
 import AddFriendWidgetForm from "../../containers/AddFriendWidgetForm";
 import MyProfileWidget from "../../containers/MyProfileWidget";
 import FriendProfileWidget from "../../containers/FriendProfileWidget";
-import FriendListForm from '../../containers/FriendListForm'
+import FriendListForm from "../../containers/FriendListForm";
 import AsideMenuForm from "../../containers/AsideMenuForm";
 
 const FriendListPage = () => {
@@ -19,12 +24,18 @@ const FriendListPage = () => {
   const { isAccessToken } = useSelector(({ userReducer }) => ({
     isAccessToken: !!userReducer.accessToken,
   }));
-  // const [isSearchWidgetOn, setIsSearchWidgetOn] = useState(false);
-  // const [isPlusFriendWidgetOn, setIsPlusFriendWidgetOn] = useState(false);
+  const [isSearchWidgetOn, setIsSearchWidgetOn] = useState(false);
+  const [isPlusFriendWidgetOn, setIsPlusFriendWidgetOn] = useState(false);
+  // console.log(isPlusFriendWidgetOn);
+
+  const closeModal = () => {
+    setIsPlusFriendWidgetOn(false);
+  };
+
   return (
     <React.Fragment>
       <aside>
-        <AsideMenuForm/>
+        <AsideMenuForm />
       </aside>
       <main>
         <header>
@@ -33,12 +44,24 @@ const FriendListPage = () => {
             <button /*onClick={() => setIsSearchWidgetOn(true)}*/>
               <FontAwesomeIcon icon={faSearch} />
             </button>
-            <AddFriendWidgetForm />
+            <React.Fragment>
+              <button
+                className="addFriendButton"
+                onClick={() => setIsPlusFriendWidgetOn(true)}
+              >
+                <FontAwesomeIcon icon={faUserPlus} />
+              </button>
+              <AddFriendWidgetForm
+                open={isPlusFriendWidgetOn}
+                close={closeModal}
+              />
+            </React.Fragment>
+            {/* <AddFriendWidgetForm /> */}
           </span>
         </header>
-        <MyProfileWidget />
+        {/* <MyProfileWidget /> */}
         <FriendListForm />
-        <FriendProfileWidget />
+        {/* <FriendProfileWidget /> */}
         {/*<친구-검색-태그> */}
       </main>
       {!isAccessToken && <Redirect to="/login" />}

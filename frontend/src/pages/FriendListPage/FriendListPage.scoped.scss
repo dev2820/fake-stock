@@ -18,3 +18,15 @@ main {
         }
     }
 }
+
+.addFriendButton{
+    background-color: transparent;
+    border:none;
+    cursor: pointer;
+    opacity: 0.5;
+   
+    &:hover{
+        opacity:1;
+        transition: 0.3s;
+    }
+}
